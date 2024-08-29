@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gemmm"
+dynamic = ["version"]
+requires-python = ">= 3.11"
+
+dependencies = [
+  "setuptools",
+  "numpy>=2.0.1",
+  "pandas>=2.2.2",
+  "scipy>=1.14.0",
+  "dask>=2024.8.0",
+  "pyarrow>=17.0.0",
+  "pooch>=1.8.2",
+  "netCDF4>=1.6.0"
+]
+
+authors = [
+  {name="Jonty Carruthers", email=jonathan.carruthers@ukhsa.gov.uk}
+]
+
+description = "Generating origin-destination matrices in Python"
+readme = "README.md"
+
+[tool.setuptools]
+# include-package-data is true by default in pyproject.toml so we do not need this line
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.rst"]}
+
+[project.urls]
+Homepage = "https://github.com/ukhsa-collaboration/Gemmm"
+
+[tool.setuptools_scm]
+
