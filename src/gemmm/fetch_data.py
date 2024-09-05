@@ -116,7 +116,7 @@ class FetchData():
         # The file will be downloaded automatically the first time this is run
         # returns the file path to the downloaded file. Afterwards, Pooch finds
         # it in the local cache and doesn't repeat the download.
-        '''
+
         headers = {'Authorization': f'token {self.github_token}',
                    'Accept': 'application/vnd.github.v4.raw'
                    }
@@ -128,13 +128,14 @@ class FetchData():
 
         self.radiation_file = self.goodboy.fetch(f'radiation_data_{day_type}.hdf5',
                                                  downloader=downloader_auth)
-        '''
 
+        '''
         # for development use only
         self.fourier_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'
                              f'fourier_data_{day_type}.hdf5')
         self.radiation_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'
                                f'radiation_data_{day_type}.hdf5')
+        '''
 
         with h5py.File(self.fourier_file, 'r') as fourier_loader:
             # get the MSOA order used to create the fourier series/migration files.
