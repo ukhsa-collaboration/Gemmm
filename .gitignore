@@ -1,0 +1,8 @@
+# For python
+.eggs/*
+build/*
+*.pyc
+*.pyd
+__pycache__
+*.egg-info
+*.egg

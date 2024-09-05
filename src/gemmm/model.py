@@ -1,67 +1,110 @@
+'''
+Generate sampled flows between pairs of MSOAs or load samples from an existing file.
+'''
+import pathlib
+import ast
+from datetime import datetime
+import netCDF4
+import pandas as pd
 import numpy as np
 import scipy.sparse as sp
 from dask import delayed, compute
-import pathlib 
-from datetime import datetime
-import netCDF4
-import ast
 
-from .fetch_data import fetch_model_data
+from .fetch_data import FetchData
 
 
 class OriginDestination:
-    def __new__(cls, msoas=None, day_type=None, path=None):
-        if path is not None:
-            #print('Loading existing sample')
+    '''
+    Class for either generating or loading samples depending on the arguments provided.
+    Sampling is performed if msoas and day_type are provided, otherwise a file containing
+    existing samples must be provided.
+    '''
+    def __new__(cls, msoas=None, day_type=None, file=None):
+        if file is not None:
             return super().__new__(ODLoader)
-            
-        elif (msoas is not None) & (day_type is not None):
-            #print('Generating samples')
-            return super().__new__(ODSampler)
-            
-        else:
-            raise ValueError('Either provide a path to existing samples or a list of MSOAs and day_type to generate new samples.')
 
-            
-            
+        if (msoas is not None) & (day_type is not None):
+            return super().__new__(ODSampler)
+
+        raise ValueError(('Either provide a path to existing samples or a list of MSOAs '
+                          'and day_type to generate new samples.'))
+
+
+
 class ODSampler(OriginDestination):
-    ''' Generate sampled numbers of journeys between a given list of MSOAs '''
-    
+    '''
+    Class for generating flows between pairs of MSOAs.
+    '''
+
     def __init__(self, msoas, day_type):
         '''
-        msoas (list): A list of MSOAs to generate numbers of journeys between
-        day_type (str): either 'weekday' or 'weekend'
+        Parameters
+        ----------
+        msoas : list or np.ndarray
+            MSOAs to generate flows between
+        day_type : string
+            Either "weekday" or "weekend"
+
+        Raises
+        ------
+        TypeError
+            If day_type is not a string, or the MSOAs are not provided in a list or np.ndarray.
+        ValueError
+            If day_type is not one of the accepted values, or only a single MSOA is provided.
+
+        Returns
+        -------
+        None.
         '''
+
         if not isinstance(day_type, str):
             raise TypeError('day_type must be a str')
-            
+
         if not day_type in ('weekday', 'weekend'):
             raise ValueError("day_type should be either 'weekday' or 'weekend'")
-        
+
         self.day_type = day_type
-        
-        if not (isinstance(msoas, list) | isinstance(msoas, np.ndarray)):
+
+        if not isinstance(msoas, list) | isinstance(msoas, np.ndarray):
             raise TypeError('MSOAs should be provided in a list or numpy array')
 
         if len(msoas) <= 1:
             raise ValueError('Please provide multiple MSOAs')
         msoas = np.array(msoas, dtype='U')
         self.msoas = msoas
-        
-        # fetch the model data
-        (self.fourier_mean, 
-        self.new_row, 
-        self.new_col, 
-        self.fourier_overdispersion, 
-        self.radiation_mean, 
-        self.radiation_theta) = fetch_model_data(self.day_type, self.msoas)
-        
-        
+
+        self.model_data = FetchData()
+        self.model_data.fetch_model_data(self.msoas, self.day_type)
+
+
+
     @staticmethod
     def check_sample_inputs(hours, n_realizations):
         '''
-        Check the inputs for the sampling methods are appropriate
+        Check that the arguments of the sampling methods are appropriate.
+
+        Parameters
+        ----------
+        hours : int or list of int
+            The hours for which to obtain samples.
+        n_realizations : int (> 0)
+            The number of realizations to generate for each hour.
+
+        Raises
+        ------
+        TypeError
+            If the hours or number of realizations are not integers.
+        ValueError
+            If the hours are not between 0 and 23, or the number of realizations is not positive.
+
+        Returns
+        -------
+        hours : list of int
+            The hours in a list
+        n_realizations : int
+            The number of realizations
         '''
+
         if not hasattr(hours, '__len__'):
             hours = [hours]
         if any(not isinstance(hour, int) for hour in hours):
@@ -73,228 +116,398 @@ class ODSampler(OriginDestination):
         if n_realizations <= 0:
             raise ValueError('The number of realizations must be greater than 0')
         return hours, n_realizations
-    
-    
+
+
     @staticmethod
-    def sparse_poisson_sample(mean, theta):
-        ''' 
-        Sample from a poisson distribution with mean equal to mean*theta
-        mean (array-like)
-        theta (float)
+    def sparse_poisson_sample(unscaled_mean, theta):
         '''
-        S = np.random.poisson(theta*mean).astype(np.int16)
-        S_sparse = sp.coo_matrix(S)
-        return S_sparse
-        
-    
+        Sample from a poisson distribution with mean given by theta * unscaled_mean.
+
+        Parameters
+        ----------
+        unscaled_mean : np.ndarray
+            The unscaled means
+        theta : numeric
+            Scale factor
+
+        Returns
+        -------
+        S_sparse : scipy.sparse matrix in coo format
+            Contains the Poisson sampled values
+        '''
+
+        sample = np.random.poisson(theta*unscaled_mean).astype(np.int16)
+        sample_sparse = sp.coo_matrix(sample)
+        return sample_sparse
+
+
     def radiation_sample(self, hours, n_realizations=1, client=None, check_inputs=True):
         '''
-        Sample numbers of journeys for pairs modelled by a radiation model
-        hours (int, list of int, 0-23): the hour(s) for which to obtain samples
-        n_realizations (int): the number of samples to obtain for each hour
-        client (): used for parallel sampling of the radiation model
+        Generate realizations using the radiation model.
+
+        Parameters
+        ----------
+        hours : int or list of int
+            The hours for which to generate samples.
+        n_realizations : int, optional
+            The number of realizations to generate for each hour. The default is 1.
+        client : TYPE, optional
+            Used to perform the radiation model sampling in parallel.
+        check_inputs : bool, optional
+            Whether to check the hours and n_realizations arguments before performing the sampling.
+            The default is True.
+
+        Returns
+        -------
+        sample : list
+            A list of scipy.sparse coo matrices containing the sampled values from the radiation
+            model. The first n_realization matrices correspond to the first hour in the hours
+            argument, the next n_realization matrices correspond to the second hour etc.
         '''
+
         if check_inputs:
             hours, n_realizations = self.check_sample_inputs(hours, n_realizations)
-            
+
         if client is None:
             # serial
-            sample = [self.sparse_poisson_sample(self.radiation_mean, theta) for theta in self.radiation_theta[hours] for _ in range(n_realizations)]
+            sample = [self.sparse_poisson_sample(self.model_data.radiation_mean, theta)
+                      for theta in self.model_data.theta[hours]
+                      for _ in range(n_realizations)]
         else:
             # parallel
-            delayed_mean = delayed(self.radiation_mean)
-            delayed_sample = [delayed(self.sparse_poisson_sample)(delayed_mean, theta) \
-                              for theta in self.radiation_theta[hours] \
+            delayed_mean = delayed(self.model_data.radiation_mean)
+            delayed_sample = [delayed(self.sparse_poisson_sample)(delayed_mean, theta)
+                              for theta in self.model_data.theta[hours]
                               for _ in range(n_realizations)]
             sample = compute(*delayed_sample, client=client)
         return sample
-    
-    
+
+
     def sparse_nbinom_sample(self, hour):
         '''
-        Sample from a negative-binomial distribution with variance equal to mean + k*mean^2
-        hour (int, 0-23): the hour for which to obtain a sample
+        Sample from a negative-binomial distribution using the Fourier series mean (mean) and
+        overdispersion parameter (k) for a given hour. The variance of the negative-binomial
+        distribution is given by var = mean + k*mean**2.
+
+        Parameters
+        ----------
+        hour : int
+            The hour for which to generate samples.
+
+        Returns
+        -------
+        S_sparse : scipy.sparse matrix in coo format
+            Contains the negative-binomial sampled values
         '''
-        mean = self.fourier_mean[hour]
-        k = self.fourier_overdispersion[hour]
-        n = 1 / k
-        p = 1 / (1 + k*mean)
-        S = np.random.negative_binomial(n=n, p=p).astype(np.int16)
-        S_sparse = sp.coo_matrix((S, (self.new_row, self.new_col)), shape=(len(self.msoas), len(self.msoas)))
-        return S_sparse
-    
-    
+
+        mean = self.model_data.fourier_mean[hour]
+        k = self.model_data.overdispersion[hour]
+        nb_n = 1 / k
+        nb_p = 1 / (1 + k*mean)
+        sample = np.random.negative_binomial(n=nb_n, p=nb_p).astype(np.int16)
+        sample_sparse = sp.coo_matrix((sample, (self.model_data.new_row, self.model_data.new_col)),
+                                      shape=(len(self.msoas), len(self.msoas)))
+        return sample_sparse
+
+
     def fourier_sample(self, hours, n_realizations=1, check_inputs=True):
         '''
-        Sample numbers of journeys for pairs modelled by a Fourier series
-        hours (int, list of int, 0-23): the hour(s) for which to obtain samples
-        n_realizations (int): the number of samples to obtain for each hour
+        Parameters
+        ----------
+        hours : int or list of int
+            The hours for which to generate samples.
+        n_realizations : int, optional
+            The number of realizations to generate for each hour. The default is 1.
+        check_inputs : bool, optional
+            Whether to check the hours and n_realizations arguments before performing the sampleing.
+            The default is True.
+
+        Returns
+        -------
+        sample : list
+            A list of scipy.sparse coo matrices containing the sampled values from the Fourier
+            series model. The first n_realization matrices correspond to the first hour in the hours
+            argument, the next n_realization matrices correspond to the second hour etc.
         '''
-        if check_inputs: 
+
+        if check_inputs:
             hours, n_realizations = self.check_sample_inputs(hours, n_realizations)
-        
+
         sample = [self.sparse_nbinom_sample(hour) for hour in hours for _ in range(n_realizations)]
         return sample
-        
 
-    def generate_sample(self, hours, n_realizations=1, client=None, save_sample=False): 
+
+    def generate_sample(self, hours, n_realizations=1, client=None, save_sample=False):
         '''
-        Sample numbers of journeys between pairs of MSOAs
-        hours (int, list of int, 0-23): the hour(s) for which to obtain samples
-        n_realizations (int): the number of samples to obtain for each hour
-        client (dask client): used for parallel sampling of the radiation model
-        save_sample (bool, path): if False, samples are not saved
-                                  if True, samples are saved in the current working directory
-                                  if str/pathlib.Path, samples are saved in this directory
+        Parameters
+        ----------
+        hours : int or list of int
+            The hours for which to generate samples.
+        n_realizations : int, optional
+            The number of realizations to generate for each hour. The default is 1.
+        client : TYPE, optional
+            Used to perform the radiation model sampling in parallel.
+        save_sample : bool or string/pathlib.Path, optional
+            If False, samples are not saved.
+            If True, samples are saved in the current working directory.
+            If string/pathlib.Path, samples are saved to this directory
+
+        Raises
+        ------
+        TypeError
+            If save_sample is not a bool or a suitable path.
+        FileNotFoundError
+            If the directory specified by save_sample does not exist.
+
+        Returns
+        -------
+        sample : list
+            A list of scipy.sparse coo matrices containing the sampled values from the combined
+            Fourier series and radiation models. The first n_realization matrices correspond to the
+            first hour in the hours argument, the next n_realization matrices correspond to the
+            second hour etc.
         '''
-        # checks on the path for saving 
+
+        # checks on the path for saving
         if save_sample:
             timestamp = datetime.today().strftime('%Y-%m-%d--%H-%M-%S')
             filename = f'{self.day_type}_samples_{timestamp}.nc'
             save_directory = pathlib.Path('')
-            
+
             if save_sample is not True:
                 if isinstance(save_sample, str):
                     save_directory = pathlib.Path(save_sample)
                 elif isinstance(save_sample, pathlib.Path):
                     save_directory = save_sample
                 else:
-                    raise TypeError('the path to the save directory should either be a str or pathlib.Path')
-                    
+                    raise TypeError(('the path to the save directory should either '
+                                     'be a str or pathlib.Path'))
+
                 # check the directory exists
                 if not save_directory.is_dir():
                     raise FileNotFoundError(f'No such directory: {save_directory}')
-        
-            save_file = save_directory / filename
-            print(save_file)
 
-        hours, n_realizations = self.check_sample_inputs(hours, n_realizations)    
-        radiation_sample = self.radiation_sample(hours, n_realizations, client=client, check_inputs=False)
+            save_file = save_directory / filename
+            print(f'Saving samples to {save_file}')
+
+        hours, n_realizations = self.check_sample_inputs(hours, n_realizations)
+        radiation_sample = self.radiation_sample(hours, n_realizations, client=client,
+                                                 check_inputs=False)
         fourier_sample = self.fourier_sample(hours, n_realizations, check_inputs=False)
         assert len(fourier_sample) == len(radiation_sample)
-        sample = [(radiation_sample[ii] + fourier_sample[ii]).tocoo() for ii in range(len(radiation_sample))]
-        
-        # save the sample to a netcdf file with the following variables
-        #   data (total_nonzero_flows x 3): for all samples, stack the index of the start/end MSOA
-        #                                   and the number of journeys. Pairs with 0 journeys are omitted
-        #   index_lookup (n_hours x n_realizations x 2): The entries at index [i,j,:] contain the start
-        #                                                and end row of data, corresponding to the sample
-        #                                                for the ith hour and jth realization.
-        #
-        # Since the hours provided may not match the indices, a dictionary is provided in the metadata
-        # e.g. if hours = [0, 6, 12], the dictionary is {'hr0':0, 'hr6':1, 'hr12':3}
+        sample = [(radiation_sample[ii] + fourier_sample[ii]).tocoo()
+                  for ii in range(len(radiation_sample))]
+
         if save_sample:
-            end_index = np.cumsum([len(s.data) for s in sample])
-            start_index = np.insert(end_index[:-1], 0, 0)
-            indices = np.array(list(zip(start_index, end_index)))
-            indices = indices.reshape((len(hours), n_realizations, 2))
-            total_nonzero = end_index[-1]
-            
-            journeys = np.concatenate([s.data for s in sample]).reshape(-1,1)
-            row = np.concatenate([s.row.astype(np.int16) for s in sample]).reshape(-1,1)
-            col = np.concatenate([s.col.astype(np.int16) for s in sample]).reshape(-1,1)
-            data = np.concatenate((row, col, journeys), axis=1)
-            
-            # todo: should also add the msoas as a separate variable
-            
-            with netCDF4.Dataset(save_file, 'w', format='NETCDF4') as f:
-                # specify the mapping between the hour and the row index of index_lookup
-                hour_to_index = {f'hr{hour}': hours.index(hour) for hour in hours}
-                f.hour_to_index_mapping = str(hour_to_index)
-                
-                # add the number of realizations to the metadata
-                f.n_realizations = n_realizations
-                
-                # turn of filling
-                f.set_fill_off()
-                
-                # set the dimensions of variables
-                dim_hour = f.createDimension('n_hours', len(hours))
-                dim_rlz = f.createDimension('n_realizations', n_realizations)
-                dim_nz = f.createDimension('n_nonzero', total_nonzero)
-                dim_rcd = f.createDimension('row_col_data', 3)
-                dim_se = f.createDimension('start_end', 2)
-                dim_msoa = f.createDimension('n_msoas', len(self.msoas))
-                dim_char = f.createDimension('n_chars', 9)  # no. of characters in each MSOA code
-                
-                # define a variable for the index lookup
-                lookup_dtype = np.uint32
-                if total_nonzero > np.iinfo(np.uint32).max:
-                    lookup_dtype = np.uint64
-                index_lookup = f.createVariable('index_lookup', lookup_dtype, ('n_hours', 'n_realizations', 'start_end'),
-                                               compression='zlib', complevel=9, shuffle=True)            
-                index_lookup[...] = indices            
-                
-                # define a variable for the data
-                sample_data = f.createVariable('data', np.int16, ('n_nonzero', 'row_col_data'),
-                                               compression='zlib', complevel=9, shuffle=True)
-                sample_data[...] = data
-                
-                # define a variable for the msoas
-                sample_msoas = f.createVariable('msoas', 'S1', ('n_msoas', 'n_chars'))
-                sample_msoas._Encoding = 'ascii' # this enables automatic conversion
-                sample_msoas[...] = self.msoas.astype('S')
-            
+            self._save_netcdf(save_file, sample, hours, n_realizations, self.msoas)
+
         return sample
-    
-    
-    
+
+
+    @staticmethod
+    def _save_netcdf(file, samples, hours, n_realizations, msoas):
+        '''
+        Save samples to a netCD4 file
+        Parameters
+        ----------
+        file : pathlib.Path
+            The file in which to save the samples.
+        samples : list
+            Contains scipy.sparse coo matrices of the sampled values
+        hours : list
+            Contains the hours for which the samples were obtained
+        n_realizations : int
+            The number of samples obtained for each hour
+        msoas : np.ndarray
+            Contains the MSOA codes used to obtain the samples
+
+        File structure
+        --------------
+        Variables
+            data (total_nonzero, 3) : A single array containing the stacked row indices, column
+                                      indices and non-zero values from the scipy.sparse coo matrix
+                                      representation of each sample
+            index_lookup (n_hours, n_realizations, 2) : A lookup table to find the rows of 'data'
+                                                        that correspond to a specific hour and
+                                                        realization. The entry at index [i, j, :]
+                                                        contains the start and end row for the ith
+                                                        hour and jth realization.
+            msoas (n_msoas, 9) : An array containing the codes of the MSOAs for which the sample
+                                 was generated. Each MSOA code contains 9 characters
+        Metadata
+            n_realizations : The number of realizations that were obtained for each hour
+
+            hour_to_index_mapping : A dictionary that provides a mapping between the hour value and
+                                    its index in 'hours'. E.g. if hours = [0, 6, 12], the dictionary
+                                    is {'hr0':0, 'hr6':1, 'hr12:2'}
+
+        Returns
+        -------
+        None.
+        '''
+
+        end_index = np.cumsum([len(s.data) for s in samples])
+        start_index = np.insert(end_index[:-1], 0, 0)
+        total_nonzero = end_index[-1]
+        indices = np.array(list(zip(start_index, end_index)))
+        indices = indices.reshape((len(hours), n_realizations, 2))
+
+        journeys = np.concatenate([s.data for s in samples]).reshape(-1,1)
+        row = np.concatenate([s.row.astype(np.int16) for s in samples]).reshape(-1,1)
+        col = np.concatenate([s.col.astype(np.int16) for s in samples]).reshape(-1,1)
+        data = np.concatenate((row, col, journeys), axis=1)
+
+        with netCDF4.Dataset(file, 'w', format='NETCDF4') as write_file:
+            # specify the mapping between the hour and the row index of index_lookup
+            hour_to_index = {f'hr{hour}': hours.index(hour) for hour in hours}
+            write_file.hour_to_index_mapping = str(hour_to_index)
+
+            # add the number of realizations to the metadata
+            write_file.n_realizations = n_realizations
+
+            # turn off filling
+            write_file.set_fill_off()
+
+            # set the dimensions of variables
+            _ = write_file.createDimension('n_hours', len(hours))            # dim_hour
+            _ = write_file.createDimension('n_realizations', n_realizations) # dim_rlz
+            _ = write_file.createDimension('n_nonzero', total_nonzero)       # dim_nz
+            _ = write_file.createDimension('row_col_data', 3)                # dim_rcd
+            _ = write_file.createDimension('start_end', 2)                   # dim_se
+            _ = write_file.createDimension('n_msoas', len(msoas))            # dim_msoa
+            _ = write_file.createDimension('n_chars', 9)                     # dim_char
+
+            lookup_dtype = np.uint32
+            if total_nonzero > np.iinfo(np.uint32).max:
+                lookup_dtype = np.uint64
+            index_lookup = write_file.createVariable('index_lookup', lookup_dtype,
+                                                     ('n_hours', 'n_realizations', 'start_end'),
+                                                     compression='zlib', complevel=9, shuffle=True)
+            index_lookup[...] = indices
+
+            # define a variable for the data
+            sample_data = write_file.createVariable('data', np.int16, ('n_nonzero', 'row_col_data'),
+                                                    compression='zlib', complevel=9, shuffle=True)
+            sample_data[...] = data
+
+            # define a variable for the msoas
+            sample_msoas = write_file.createVariable('msoas', 'S1', ('n_msoas', 'n_chars'))
+            sample_msoas._Encoding = 'ascii' # this enables automatic conversion
+            sample_msoas[...] = msoas.astype('S')
+
+
+
 class ODLoader(OriginDestination):
-    ''' Load sampled numbers of journeys from an existing file '''
-    
+    '''
+    Class for loading existing samples from a netCDF4 file.
+    '''
+
     def __init__(self, file):
         '''
-        file (str or pathlib.Path): netcdf file where the samples are saved
+        Parameters
+        ----------
+        file : string or pathlib.Path
+            The netCDF4 file containing the existing samples.
+
+        Raises
+        ------
+        TypeError
+            If file is not a string of pathlib.Path
+        FileNotFoundError
+            If the file does not exist.
+        ValueError
+            If the file provided is not a netCDF file (does not have .nc extension)
+
+        Returns
+        -------
+        None.
         '''
+
         if isinstance(file, str):
             file = pathlib.Path(file)
         elif not isinstance(file, pathlib.Path):
-            raise TypeError('The path should either be a str or pathlib.Path')
-        
+            raise TypeError('The file path should either be a str or pathlib.Path')
+
         # check that the file exists
         if not file.is_file():
             raise FileNotFoundError(f'No such file: {file}')
-        
+
+        if file.suffix != '.nc':
+            raise ValueError('The file should be a netCDF file')
+
         self.file = file
-    
+
         # get the available hours and number of realizations
-        with netCDF4.Dataset(self.file, 'r', format='NETCDF4') as f:
-            self.hour_to_index = ast.literal_eval(f.hour_to_index_mapping)
+        with netCDF4.Dataset(self.file, 'r', format='NETCDF4') as read_file:
+            self.hour_to_index = ast.literal_eval(read_file.hour_to_index_mapping)
             available_hours = [key.split('hr')[-1] for key in self.hour_to_index.keys()]
             self.hours = [int(x) for x in available_hours]
-            self.n_realizations = int(f.n_realizations)
-            self.msoas = f['msoas'][:]
-        
-        print(f'Available hours: {(", ").join(available_hours)}\nNumber of realizations: {self.n_realizations}')
-        
-        
-    def load_sample(self, hour, realization=None):
+            self.n_realizations = int(read_file.n_realizations)
+            self.msoas = read_file['msoas'][:]
+
+        print((f'Available hours: {(", ").join(available_hours)}'
+              f'\nNumber of realizations: {self.n_realizations}'))
+
+
+    def load_sample(self, hour, realization=None, as_pandas=True):
         '''
-        hour (int, 0-23): the hour to load samples for
-        realization (int): the number of a specific realization to load, 
-                           if None the realization is selected at random
+        Parameters
+        ----------
+        hour : int
+            The hour for which to load the sample
+        realization : int, optional
+            The sample number. If None, a realization is selected at random
+        as_pandas : bool, optional
+            Whether to return the sample as a pandas DataFrame with the row/column indices replaced
+            with the corresponding start/end MSOA codes. The default is True.
+
+        Raises
+        ------
+        TypeError
+            If the hour or realization number is not an integer.
+        ValueError
+            If the hour or realization number is not available in the given file.
+
+        Returns
+        -------
+        pandas DataFrame or np.ndarray
+            pandas DataFrame: A dataframe with 3 columns corresponding to the start MSOA code,
+                              end MSOA code, and the sampled number of journeys between them.
+            np.ndarray: An array with 3 columns. The first 2 columns contain the indices of the
+                        start and end MSOAs within self.msoas. The final column contains the
+                        number of journeys between each pair.
+
+        In both cases, only pairs with a non-zero number of journeys are included.
         '''
+
         # checks on inputs
         if not isinstance(hour, int):
             raise TypeError('The hour must be an integer')
-            
+
         if not hour in self.hours:
             raise ValueError(f'Choose from the available hours: {self.hours}')
-            
+
         if realization is not None:
             # it should be an integer and less than n_realizations
             if not isinstance(realization, int):
                 raise TypeError('The realization must be an integer')
             if not 0 <= realization < self.n_realizations:
-                raise ValueError('The realization must be between 0 and {self.n_realizations-1}')
+                raise ValueError(f'The realization must be between 0 and {self.n_realizations-1}')
         else:
             # randomly choose a realization
             realization = np.random.randint(low=0, high=self.n_realizations)
-            
-        with netCDF4.Dataset(self.file, 'r', format='NETCDF4') as f:
+
+        with netCDF4.Dataset(self.file, 'r', format='NETCDF4') as read_file:
             hour_index = self.hour_to_index[f'hr{hour}']
-            start_index, end_index = f['index_lookup'][hour_index, realization, :]
-            sample = f['data'][start_index:end_index,:].data
-            
+            start_index, end_index = read_file['index_lookup'][hour_index, realization, :]
+            sample = read_file['data'][start_index:end_index,:].data
+
+        if as_pandas:
+            # convert to a pandas dataframe with the row and column index replaced by the code of
+            # the start and end MSOA
+            sample_df = pd.DataFrame({'start_msoa': self.msoas[sample[:, 0]],
+                                      'end_msoa': self.msoas[sample[:, 1]],
+                                      'journeys': sample[:, 2]})
+            return sample_df
         return sample
             

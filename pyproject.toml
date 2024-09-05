@@ -15,12 +15,13 @@ dependencies = [
   "dask>=2024.8.0",
   "pyarrow>=17.0.0",
   "pooch>=1.8.2",
-  "netCDF4>=1.6.0"
+  "netCDF4>=1.6.0",
   "h5py>=3.11.0"
+  "tqdm>=4.66.5"
 ]
 
 authors = [
-  {name="Jonty Carruthers", email=jonathan.carruthers@ukhsa.gov.uk}
+  {name="Jonty Carruthers", email="jonathan.carruthers@ukhsa.gov.uk"}
 ]
 
 description = "Generating origin-destination matrices in Python"
