@@ -60,7 +60,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name Check python version
+      - name: Check python version
         run: python -c "import sys; print(sys.version)"
 
       - name: Install pip
