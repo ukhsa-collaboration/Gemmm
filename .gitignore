@@ -6,3 +6,4 @@ build/*
 __pycache__
 *.egg-info
 *.egg
+admin_notebooks
