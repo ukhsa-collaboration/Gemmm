@@ -6,4 +6,7 @@ build/*
 __pycache__
 *.egg-info
 *.egg
+
+# notebooks
 admin_notebooks
+.ipynb_checkpoints
