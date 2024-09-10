@@ -112,9 +112,9 @@ class TestModel(unittest.TestCase):
                                     [ 14,   0,   0,   0,  13,  20,   4, 181]], dtype=np.int16)
 
         np.random.seed(1234)
-        generated_sample = self.od_model.generate_sample(hours=7, n_realizations=1,
-                                                         save_sample=False)[0]
-        generated_sample = generated_sample.toarray()
+        self.od_model.generate_sample(hours=7, n_realizations=1, save_sample=False)
+        
+        generated_sample = self.od_model.samples[(7, 0)].toarray()
         np.testing.assert_array_equal(generated_sample, expected_sample)
 
 

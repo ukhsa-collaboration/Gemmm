@@ -23,7 +23,7 @@ class OriginDestination:
         if file is not None:
             return super().__new__(ODLoader)
 
-        if (msoas is not None) & (day_type is not None):
+        if (msoas is not None) and (day_type is not None):
             return super().__new__(ODSampler)
 
         raise ValueError(('Either provide a path to existing samples or a list of MSOAs '
@@ -75,7 +75,7 @@ class ODSampler(OriginDestination):
 
         self.model_data = FetchData()
         self.model_data.fetch_model_data(self.msoas, self.day_type)
-
+        self. samples = None
 
 
     @staticmethod
@@ -212,6 +212,8 @@ class ODSampler(OriginDestination):
 
     def fourier_sample(self, hours, n_realizations=1, check_inputs=True):
         '''
+        Generate realizations using the Fourier series model.
+
         Parameters
         ----------
         hours : int or list of int
@@ -239,6 +241,8 @@ class ODSampler(OriginDestination):
 
     def generate_sample(self, hours, n_realizations=1, client=None, save_sample=False):
         '''
+        Generate realizations using the combined Fourier series and radiation model.
+
         Parameters
         ----------
         hours : int or list of int
@@ -261,11 +265,11 @@ class ODSampler(OriginDestination):
 
         Returns
         -------
-        sample : list
-            A list of scipy.sparse coo matrices containing the sampled values from the combined
-            Fourier series and radiation models. The first n_realization matrices correspond to the
-            first hour in the hours argument, the next n_realization matrices correspond to the
-            second hour etc.
+        None.
+
+        Assigns a dictionary containing the samples to a .samples attribute. The key (x, y) can be
+        used to extract the scipy.sparse coo matrix that contains the sampled values for hour x and
+        realization y.
         '''
 
         # checks on the path for saving
@@ -301,13 +305,80 @@ class ODSampler(OriginDestination):
         if save_sample:
             self._save_netcdf(save_file, sample, hours, n_realizations, self.msoas)
 
-        return sample
+        # convert to dict with (hour, realization) key for each sample
+        # makes it easier to retrieve the sample for a specific hour, realization
+        keys = [(hour, realization) for hour in hours for realization in range(n_realizations)]
+
+        # setting the sample as an attribute make it easier to ensure that to_pandas is using
+        # a sample that comes from the object that generated it.
+        self.samples = dict(zip(keys, sample))
+
+        # otherwise, just return the sample
+        #return dict(zip(keys, sample))
+
+
+    def to_pandas(self, hour, realization, wide=False):
+        '''
+        Convert a sample from a sparse matrix to a pandas DataFrame.
+
+        Parameters
+        ----------
+        hour : int
+            The hour of the sample to convert.
+        realization : int
+            The realization of the sample to convert.
+        wide : bool, optional
+            Whether to return the pandas DataFrame in wide format. The default is False
+
+        Raises
+        ------
+        TypeError
+            If the hour or realization are not integers
+        KeyError
+            If (hour, realization) is not a key in the dictionary of samples.
+
+        Returns
+        -------
+        pd.DataFrame
+            A dataframe containing the start MSOA, end MSOA and number of journeys between them for
+            all pairs of MSOAs with a non-zero number of journeys.
+
+            If wide=False: the dataframe contains 3 columns for the start MSOA, end MSOA and number
+                           of journeys.
+            If wide=True: the dataframe has shape (len(msoas), len(msoas)), the index represents the
+                          start MSOA, the columns represent the end MSOA, and the values are the
+                          numbers of journeys.
+        '''
+
+        if not isinstance(hour, int):
+            raise TypeError('The hour must be an integer')
+        if not isinstance(realization, int):
+            raise TypeError('The realization must be an integer')
+
+        key_hours, key_realizations = zip(*self.samples.keys())
+        sample = self.samples.get((hour, realization))
+
+        if sample is None:
+            raise KeyError(('Key does not exist. '
+                            f'The hour should be in {[int(i) for i in np.unique(key_hours)]} and '
+                            f'the realziation should be between 0 and {max(key_realizations)}.'
+                            ))
+
+        sample_df = pd.DataFrame({'start_msoa': self.msoas[sample.row],
+                                  'end_msoa': self.msoas[sample.col],
+                                  'journeys': sample.data})
+        if wide:
+            # convert to wide format using pivot_table
+            return pd.pivot_table(sample_df, columns='end_msoa', index='start_msoa', fill_value=0)
+
+        return sample_df
 
 
     @staticmethod
     def _save_netcdf(file, samples, hours, n_realizations, msoas):
         '''
-        Save samples to a netCD4 file
+        Save samples to a netCD4 file.
+
         Parameters
         ----------
         file : pathlib.Path
@@ -449,8 +520,10 @@ class ODLoader(OriginDestination):
               f'\nNumber of realizations: {self.n_realizations}'))
 
 
-    def load_sample(self, hour, realization=None, as_pandas=True):
+    def load_sample(self, hour, realization=None, as_pandas=True, wide=False):
         '''
+        Load a single sample for a specific hour.
+
         Parameters
         ----------
         hour : int
@@ -460,6 +533,8 @@ class ODLoader(OriginDestination):
         as_pandas : bool, optional
             Whether to return the sample as a pandas DataFrame with the row/column indices replaced
             with the corresponding start/end MSOA codes. The default is True.
+        wide : bool, optional
+            Whether to return the pandas DataFrame in wide format. The default is False
 
         Raises
         ------
@@ -470,14 +545,21 @@ class ODLoader(OriginDestination):
 
         Returns
         -------
-        pandas DataFrame or np.ndarray
-            pandas DataFrame: A dataframe with 3 columns corresponding to the start MSOA code,
-                              end MSOA code, and the sampled number of journeys between them.
+        If as_pandas=True and wide=False:
+            pd.DataFrame: A dataframe with 3 columns corresponding to the start MSOA code,
+                          end MSOA code, and the sampled number of journeys between them.
+
+        If as_pandas=True and wide=True:
+            pd.DataFrame: the dataframe has shape (len(msoas), len(msoas)), the index represents the
+                          start MSOA, the columns represent the end MSOA, and the values are the
+                          numbers of journeys.
+
+        If as_pandas=False:
             np.ndarray: An array with 3 columns. The first 2 columns contain the indices of the
                         start and end MSOAs within self.msoas. The final column contains the
                         number of journeys between each pair.
 
-        In both cases, only pairs with a non-zero number of journeys are included.
+        In all cases, only pairs with a non-zero number of journeys are included.
         '''
 
         # checks on inputs
@@ -505,9 +587,14 @@ class ODLoader(OriginDestination):
         if as_pandas:
             # convert to a pandas dataframe with the row and column index replaced by the code of
             # the start and end MSOA
-            sample_df = pd.DataFrame({'start_msoa': self.msoas[sample[:, 0]],
-                                      'end_msoa': self.msoas[sample[:, 1]],
-                                      'journeys': sample[:, 2]})
+            sample_df = pd.DataFrame({'start_msoa': self.msoas[sample[:,0]],
+                                      'end_msoa': self.msoas[sample[:,1]],
+                                      'journeys': sample[:,2]})
+            if wide:
+                # convert to wide format using pivot_table
+                return pd.pivot_table(sample_df, columns='end_msoa', index='start_msoa',
+                                      fill_value=0)
+
             return sample_df
+
         return sample
-            

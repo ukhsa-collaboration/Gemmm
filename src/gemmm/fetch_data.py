@@ -86,8 +86,8 @@ class FetchData():
         np.ndarray
             An array containing the index in x_1 of each element in x_2.
             Does not require x_1 to be sorted.
-
         '''
+
         sorted_indices = np.argsort(x_1)
         x_1_sorted = x_1[sorted_indices]
         idx_sorted = np.searchsorted(x_1_sorted, x_2)
@@ -96,6 +96,10 @@ class FetchData():
 
     def fetch_model_data(self, msoas, day_type):
         '''
+        Get the data required to run both models. Initially, these files are downloaded from
+        https://github.com/ukhsa-collaboration/Gemmm/tree/main/model_data. Afterwards, Pooch finds
+        them in a local cache.
+
         Parameters
         ----------
         msoas : np.ndarray
@@ -113,9 +117,6 @@ class FetchData():
         -------
         None.
         '''
-        # The file will be downloaded automatically the first time this is run
-        # returns the file path to the downloaded file. Afterwards, Pooch finds
-        # it in the local cache and doesn't repeat the download.
 
         headers = {'Authorization': f'token {self.github_token}',
                    'Accept': 'application/vnd.github.v4.raw'
@@ -128,7 +129,6 @@ class FetchData():
 
         self.radiation_file = self.goodboy.fetch(f'radiation_data_{day_type}.hdf5',
                                                  downloader=downloader_auth)
-
         '''
         # for development use only
         self.fourier_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'
@@ -136,7 +136,6 @@ class FetchData():
         self.radiation_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'
                                f'radiation_data_{day_type}.hdf5')
         '''
-
         with h5py.File(self.fourier_file, 'r') as fourier_loader:
             # get the MSOA order used to create the fourier series/migration files.
             # this is needed to get the correct entries from the sparse matrices
@@ -174,7 +173,12 @@ class FetchData():
             idx_mask = np.isin(row, self.msoa_indices) & np.isin(col, self.msoa_indices)
             self.new_row = self.find_indices(self.msoa_indices, row[idx_mask])
             self.new_col = self.find_indices(self.msoa_indices, col[idx_mask])
-            self.fourier_mean = fourier_loader['fourier'][:, idx_mask]
+
+            #self.fourier_mean = fourier_loader['fourier'][:, idx_mask]
+
+            # faster to first load the whole array when the number of MSOAs is large
+            fourier_mean = fourier_loader['fourier'][...]
+            self.fourier_mean = fourier_mean[:, idx_mask]
 
             # load the overdispersion parameters
             self.overdispersion = fourier_loader['overdispersion'][:]
