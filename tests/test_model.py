@@ -53,8 +53,8 @@ class TestModel(unittest.TestCase):
 
         hour = 7
         mean_7 = np.zeros((self.n_msoas, self.n_msoas))
-        mean_7[self.od_model.model_data.new_row,
-               self.od_model.model_data.new_col] = self.od_model.model_data.fourier_mean[hour]
+        mean_7[self.od_model.fourier_data.row,
+               self.od_model.fourier_data.col] = self.od_model.fourier_data.mean[hour]
 
         np.testing.assert_allclose(mean_7, expected_mean_7, rtol=0.001)
 

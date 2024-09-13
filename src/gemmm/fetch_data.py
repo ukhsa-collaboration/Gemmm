@@ -21,29 +21,14 @@ class FetchData():
     msoa_indices : np.ndarray
         Contains the indices of the specified MSOAs within the original array of
         MSOAs used to fit the model.
-    new_row / new_col : np.ndarray
-        For a matrix of means with rows and columns equal to msoas, contains
-        the row / column indices of the non-zero values.
-    fourier_mean : np.ndarray (24, n_nonzero)
-        Contains the non-zero means for the Fourier series model.
-        The ith row corresponds to the ith hour of the day.
-    overdispersion : np.ndarray (24, )
-        Contains the overdispersion parameters for each hour of the day that
-        are needed to sample from the negative binomial distribution for pairs
-        modelled using a Fourier series.
-    radiation_mean : np.ndarray (n_msoas, n_msoas)
-        Contains the means for the radiation model.
-    theta : np.ndarray (24, )
-        Contains scale factors for each hour of the day that multiply the
-        radiation_mean when sampling from a Poisson distribution.
     '''
 
-    def __init__(self):
+    def __init__(self, msoas, day_type):
         data_url = 'https://api.github.com/repos/ukhsa-collaboration/Gemmm/contents/model_data/'
         cache_dir = 'gemmm-model-data'
-        self.github_token = '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' # valid until 12/9/2024
+        github_token = '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' # valid until 12/9/2024
 
-        self.goodboy = pooch.create(
+        goodboy = pooch.create(
             path = pooch.os_cache(cache_dir),
             base_url = data_url,
 
@@ -60,17 +45,38 @@ class FetchData():
                         'radiation_data_weekend.hdf5':
                         'sha256:f61de789b2436609abd44035377f7fc8a509db68e54526a7ca33b4e962a78d43'
                         }
-            )
+                )
 
-        self.fourier_file = None
-        self.radiation_file = None
-        self.msoa_indices = None
-        self.new_row = None
-        self.new_col = None
-        self.fourier_mean = None
-        self.overdispersion = None
-        self.radiation_mean = None
-        self.theta = None
+        downloader_auth = pooch.HTTPDownloader(headers={'Authorization': f'token {github_token}',
+                                                        'Accept': 'application/vnd.github.v4.raw'},
+                                               progressbar=True)
+
+        self.fourier_file = goodboy.fetch(f'fourier_data_{day_type}.hdf5',
+                                          downloader=downloader_auth)
+
+        self.radiation_file = goodboy.fetch(f'radiation_data_{day_type}.hdf5',
+                                            downloader=downloader_auth)
+        '''
+        # for development use only
+        self.fourier_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'
+                             f'fourier_data_{day_type}.hdf5')
+        self.radiation_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'
+                               f'radiation_data_{day_type}.hdf5')
+        '''
+
+        with h5py.File(self.fourier_file, 'r') as fourier_loader:
+            # get the MSOA order used to create the fourier series/migration files.
+            # this is needed to get the correct entries from the sparse matrices
+            msoa_order = fourier_loader['msoa_order'][:]
+
+        msoa_order = np.astype(msoa_order, 'U')
+
+        if len(set(msoas) - set(msoa_order)) > 0:
+            raise ValueError(('MSOAs have been provided that are '
+                              'not included in the telecoms model'))
+
+        self.msoa_indices = self.find_indices(msoa_order, msoas)
+        assert all(msoa_order[self.msoa_indices] == msoas)
 
 
     @staticmethod
@@ -94,66 +100,6 @@ class FetchData():
         return sorted_indices[idx_sorted]
 
 
-    def fetch_model_data(self, msoas, day_type):
-        '''
-        Get the data required to run both models. Initially, these files are downloaded from
-        https://github.com/ukhsa-collaboration/Gemmm/tree/main/model_data. Afterwards, Pooch finds
-        them in a local cache.
-
-        Parameters
-        ----------
-        msoas : np.ndarray
-            An array of MSOA codes that we require model data for
-        day_type : string
-                Either "weekday" or "weekend"
-
-        Raises
-        ------
-        ValueError
-            If msoas includes codes that were not including when initially
-            fitting the model.
-
-        Returns
-        -------
-        None.
-        '''
-
-        headers = {'Authorization': f'token {self.github_token}',
-                   'Accept': 'application/vnd.github.v4.raw'
-                   }
-
-        downloader_auth = pooch.HTTPDownloader(headers=headers, progressbar=True)
-
-        self.fourier_file = self.goodboy.fetch(f'fourier_data_{day_type}.hdf5',
-                                               downloader=downloader_auth)
-
-        self.radiation_file = self.goodboy.fetch(f'radiation_data_{day_type}.hdf5',
-                                                 downloader=downloader_auth)
-        '''
-        # for development use only
-        self.fourier_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'
-                             f'fourier_data_{day_type}.hdf5')
-        self.radiation_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'
-                               f'radiation_data_{day_type}.hdf5')
-        '''
-        with h5py.File(self.fourier_file, 'r') as fourier_loader:
-            # get the MSOA order used to create the fourier series/migration files.
-            # this is needed to get the correct entries from the sparse matrices
-            msoa_order = fourier_loader['msoa_order'][:]
-
-        msoa_order = np.astype(msoa_order, 'U')
-
-        if len(set(msoas) - set(msoa_order)) > 0:
-            raise ValueError(('MSOAs have been provided that are '
-                              'not included in the telecoms model'))
-
-        self.msoa_indices = self.find_indices(msoa_order, msoas)
-        assert all(msoa_order[self.msoa_indices] == msoas)
-
-        self.fetch_fourier()
-        self.fetch_radiation()
-
-
     def fetch_fourier(self):
         '''
         Load the data needed to run the Fourier series model.
@@ -171,17 +117,18 @@ class FetchData():
             row = fourier_loader['row_idx'][:]
             col = fourier_loader['col_idx'][:]
             idx_mask = np.isin(row, self.msoa_indices) & np.isin(col, self.msoa_indices)
-            self.new_row = self.find_indices(self.msoa_indices, row[idx_mask])
-            self.new_col = self.find_indices(self.msoa_indices, col[idx_mask])
+            new_row = self.find_indices(self.msoa_indices, row[idx_mask])
+            new_col = self.find_indices(self.msoa_indices, col[idx_mask])
 
-            #self.fourier_mean = fourier_loader['fourier'][:, idx_mask]
-
-            # faster to first load the whole array when the number of MSOAs is large
+            # faster to first load the whole array when the number of MSOAs is large,
+            # rather than fourier_loader['fourier'][:, idx_mask]
             fourier_mean = fourier_loader['fourier'][...]
-            self.fourier_mean = fourier_mean[:, idx_mask]
+            fourier_mean = fourier_mean[:, idx_mask]
 
             # load the overdispersion parameters
-            self.overdispersion = fourier_loader['overdispersion'][:]
+            overdispersion = fourier_loader['overdispersion'][:]
+
+        return FourierData(new_row, new_col, fourier_mean, overdispersion)
 
 
     def fetch_radiation(self):
@@ -197,5 +144,119 @@ class FetchData():
         with h5py.File(self.radiation_file, 'r') as radiation_loader:
             # get the radiation model parameters
             mesh_ind = np.ix_(self.msoa_indices, self.msoa_indices)
-            self.radiation_mean = radiation_loader['radiation'][:,:][mesh_ind]
-            self.theta = radiation_loader['theta'][:]
+            radiation_mean = radiation_loader['radiation'][:,:][mesh_ind]
+            theta = radiation_loader['theta'][:]
+
+        return RadiationData(radiation_mean, theta)
+
+
+
+class RadiationData():
+    ''' Class for storing the data needed to run the radiation model '''
+
+    def __init__(self, mean, theta):
+        mean.setflags(write=False)
+        theta.setflags(write=False)
+        self._mean = mean
+        self._theta = theta
+
+    @property
+    def mean(self):
+        '''
+        Returns
+        -------
+        np.ndarray (n_msoas, n_msoas)
+            Contains the unscaled means for the radiation model
+        '''
+        return self._mean
+
+    @mean.setter
+    def mean(self, value):
+        raise AttributeError('Radiation mean is read-only')
+
+    @property
+    def theta(self):
+        '''
+        Returns
+        -------
+        np.ndarray (24, )
+            Contains the scale factors for each hour of the day that multiply the
+            radiation_mean when sampling from a Poisson distribution.
+        '''
+        return self._theta
+
+    @theta.setter
+    def theta(self, value):
+        raise AttributeError('Radiation theta is read-only')
+
+
+
+class FourierData():
+    ''' Class for storing the data needed to run the Fourier series model '''
+
+    def __init__(self, row, col, mean, overdispersion):
+        row.setflags(write=False)
+        col.setflags(write=False)
+        mean.setflags(write=False)
+        overdispersion.setflags(write=False)
+        self._row = row
+        self._col = col
+        self._mean = mean
+        self._overdispersion = overdispersion
+
+    @property
+    def row(self):
+        '''
+        Returns
+        -------
+        np.ndarray (n_nonzero, )
+            Contains the indices of the start MSOAs
+        '''
+        return self._row
+
+    @row.setter
+    def row(self, value):
+        raise AttributeError('Fourier row is read-only')
+
+    @property
+    def col(self):
+        '''
+        Returns
+        -------
+        np.ndarray (n_nonzero, )
+            Contains the indices of the end MSOAs
+        '''
+        return self._col
+
+    @col.setter
+    def col(self, value):
+        raise AttributeError('Fourier col is read-only')
+
+    @property
+    def mean(self):
+        '''
+        Returns
+        -------
+        np.ndarray (24, n_nonzero)
+            Contains the mean number of journeys between MSOAs
+        '''
+        return self._mean
+
+    @mean.setter
+    def mean(self, value):
+        raise AttributeError('Fourier mean is read-only')
+
+    @property
+    def overdispersion(self):
+        '''
+        Returns
+        -------
+        np.ndarray (24, )
+            Contains the overdispersion parameters for each hour of the day that
+            are needed to sample from the negative binomial distribution
+        '''
+        return self._overdispersion
+
+    @overdispersion.setter
+    def overdispersion(self, value):
+        raise AttributeError('Fourier overdispersion is read-only')

@@ -71,11 +71,15 @@ class ODSampler(OriginDestination):
         if len(msoas) <= 1:
             raise ValueError('Please provide multiple MSOAs')
         msoas = np.array(msoas, dtype='U')
+
         self.msoas = msoas
 
-        self.model_data = FetchData()
-        self.model_data.fetch_model_data(self.msoas, self.day_type)
-        self. samples = None
+        # Load the data required to run the Fourier series and radiation models
+        fetcher = FetchData(msoas, day_type)
+        self.fourier_data = fetcher.fetch_fourier()
+        self.radiation_data = fetcher.fetch_radiation()
+
+        self.samples = None
 
 
     @staticmethod
@@ -170,14 +174,14 @@ class ODSampler(OriginDestination):
 
         if client is None:
             # serial
-            sample = [self.sparse_poisson_sample(self.model_data.radiation_mean, theta)
-                      for theta in self.model_data.theta[hours]
+            sample = [self.sparse_poisson_sample(self.radiation_data.mean, theta)
+                      for theta in self.radiation_data.theta[hours]
                       for _ in range(n_realizations)]
         else:
             # parallel
-            delayed_mean = delayed(self.model_data.radiation_mean)
+            delayed_mean = delayed(self.radiation_data.mean)
             delayed_sample = [delayed(self.sparse_poisson_sample)(delayed_mean, theta)
-                              for theta in self.model_data.theta[hours]
+                              for theta in self.radiation_data.theta[hours]
                               for _ in range(n_realizations)]
             sample = compute(*delayed_sample, client=client)
         return sample
@@ -200,12 +204,12 @@ class ODSampler(OriginDestination):
             Contains the negative-binomial sampled values
         '''
 
-        mean = self.model_data.fourier_mean[hour]
-        k = self.model_data.overdispersion[hour]
+        mean = self.fourier_data.mean[hour]
+        k = self.fourier_data.overdispersion[hour]
         nb_n = 1 / k
         nb_p = 1 / (1 + k*mean)
         sample = np.random.negative_binomial(n=nb_n, p=nb_p).astype(np.int16)
-        sample_sparse = sp.coo_matrix((sample, (self.model_data.new_row, self.model_data.new_col)),
+        sample_sparse = sp.coo_matrix((sample, (self.fourier_data.row, self.fourier_data.col)),
                                       shape=(len(self.msoas), len(self.msoas)))
         return sample_sparse
 
@@ -265,9 +269,12 @@ class ODSampler(OriginDestination):
 
         Returns
         -------
-        None.
+        pathlib.Path
+            If save_sample=True, returns the file path.
+        otherwise
+            None.
 
-        Assigns a dictionary containing the samples to a .samples attribute. The key (x, y) can be
+        Assigns a dictionary containing the samples to .samples attribute. The key (x, y) can be
         used to extract the scipy.sparse coo matrix that contains the sampled values for hour x and
         realization y.
         '''
@@ -302,9 +309,6 @@ class ODSampler(OriginDestination):
         sample = [(radiation_sample[ii] + fourier_sample[ii]).tocoo()
                   for ii in range(len(radiation_sample))]
 
-        if save_sample:
-            self._save_netcdf(save_file, sample, hours, n_realizations, self.msoas)
-
         # convert to dict with (hour, realization) key for each sample
         # makes it easier to retrieve the sample for a specific hour, realization
         keys = [(hour, realization) for hour in hours for realization in range(n_realizations)]
@@ -313,8 +317,11 @@ class ODSampler(OriginDestination):
         # a sample that comes from the object that generated it.
         self.samples = dict(zip(keys, sample))
 
-        # otherwise, just return the sample
-        #return dict(zip(keys, sample))
+        if save_sample:
+            self._save_netcdf(save_file, sample, hours, n_realizations, self.msoas)
+            return save_file
+
+        return None
 
 
     def to_pandas(self, hour, realization, wide=False):
@@ -440,13 +447,16 @@ class ODSampler(OriginDestination):
             write_file.set_fill_off()
 
             # set the dimensions of variables
-            _ = write_file.createDimension('n_hours', len(hours))            # dim_hour
-            _ = write_file.createDimension('n_realizations', n_realizations) # dim_rlz
-            _ = write_file.createDimension('n_nonzero', total_nonzero)       # dim_nz
-            _ = write_file.createDimension('row_col_data', 3)                # dim_rcd
-            _ = write_file.createDimension('start_end', 2)                   # dim_se
-            _ = write_file.createDimension('n_msoas', len(msoas))            # dim_msoa
-            _ = write_file.createDimension('n_chars', 9)                     # dim_char
+            dim_dict = {'n_hours': len(hours),
+                        'n_realizations': n_realizations,
+                        'n_nonzero': total_nonzero,
+                        'row_col_data': 3,
+                        'start_end': 2,
+                        'n_msoas': len(msoas),
+                        'n_chars': 9}
+
+            for dim_name, dim_size in dim_dict.items():
+                write_file.createDimension(dim_name, dim_size)
 
             lookup_dtype = np.uint32
             if total_nonzero > np.iinfo(np.uint32).max:
@@ -463,7 +473,8 @@ class ODSampler(OriginDestination):
 
             # define a variable for the msoas
             sample_msoas = write_file.createVariable('msoas', 'S1', ('n_msoas', 'n_chars'))
-            sample_msoas._Encoding = 'ascii' # this enables automatic conversion
+            # accessing protected member enables automatic conversion of strings
+            sample_msoas._Encoding = 'ascii'
             sample_msoas[...] = msoas.astype('S')
 
 
