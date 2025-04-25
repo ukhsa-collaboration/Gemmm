@@ -26,7 +26,7 @@ class FetchData():
     def __init__(self, msoas, day_type):
         data_url = 'https://api.github.com/repos/ukhsa-collaboration/Gemmm/contents/model_data/'
         cache_dir = 'gemmm-model-data'
-        github_token = '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' # valid until 13/10/2024
+        github_token = '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' # valid until 25/5/2025
 
         goodboy = pooch.create(
             path = pooch.os_cache(cache_dir),
