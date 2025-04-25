@@ -1,0 +1,54 @@
+#######################################################################################
+# A basic _config file using a fraction of the available settings.
+# To see all that can be done:
+# https://jupyterbook.org/customize/config.html
+
+#######################################################################################
+# Book settings
+title                       : GeMMM  # The title of the book. Will be placed in the left navbar.
+author                      : UK Health Security Agency  # The author of the book to be placed in the footer
+#copyright                   : "2025" # Copyright year to be placed in the footer (not sure how to specify "Crown copyright", please update the git repo if you find out)
+#logo                        : images/gemmm_logo_light.png  # A path to the book logo, placed in top left
+only_build_toc_files        : true  # Auto-exclude files not in the toc
+
+#######################################################################################
+# Execution settings
+execute:
+  allow_errors              : true # If `False`, when a code cell raises an error the execution is stopped, otherwise all cells are always run.
+
+#######################################################################################
+# LaTeX-specific settings
+latex:
+  latex_documents:
+    targetname: gemmm.tex  # Name of the latex output file for PDF builds
+
+bibtex_bibfiles: 
+  - 'bib/ref.bib' # Where to find BibTeX citations, use sphinx to specify style in md/bib
+
+#######################################################################################
+# custom copyright message - set the above copyright year to an empty string
+#html:
+#  extra_footer: |
+#    <div>
+#      &copy Crown Copyright (2025) UK Health Security Agency
+#    </div>
+
+# Advanced and power-user settings
+sphinx:
+  extra_extensions:
+    - 'sphinx.ext.autodoc'
+    - 'sphinx.ext.napoleon'
+    - 'sphinx.ext.viewcode'
+  config:  # key-value pairs to directly over-ride the Sphinx configuration
+    bibtex_reference_style: super  # Set the formatting of the citation references
+    add_module_names: True
+    html_theme_options:
+      logo:
+        image_light: images/gemmm_logo_light.png
+        image_dark: images/gemmm_logo_dark.png
+      extra_footer: |
+        <div>
+          &copy Crown Copyright 2025
+        </div>
+    html_show_copyright: false
+

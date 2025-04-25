@@ -1,0 +1,23 @@
+#######################################################################################
+# Table of contents file
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book  # Tells JB the structure, so it knows what terminology (chapter/section etc.) to expect.
+root: md/welcome  # First page of your book, all paths for chapters/sections will be relative to this.
+parts:
+  - caption: User Guide
+    chapters:
+    - file: md/intro
+    - file: md/data
+    - file: md/fourier
+    - file: md/radiation
+    - file: md/performance
+  - caption: Tutorial
+    chapters:
+    - file: notebooks/example
+  - caption: References
+    chapters:
+    - file: md/bib
+  - caption: Code documentation
+    chapters:
+    - file: rst/autodoc-model

@@ -34,6 +34,28 @@ class OriginDestination:
 class ODSampler(OriginDestination):
     '''
     Class for generating flows between pairs of MSOAs.
+
+    Parameters
+    ----------
+    msoas: list or np.ndarray
+        MSOAs to generate flows between.
+    day_type: string
+        The day type samples are being generated for, either 'weekday' or 'weekend'.
+        
+    Attributes
+    ----------
+    msoas : np.ndarray
+        MSOAs to generate flows between.
+    day_type : string
+        Either 'weekday' or 'weekend'.
+    fourier_data : FourierData
+        Hourly means and overdispersion parameters for the Fourier series model.
+    radiation_data : RadiationData
+        Means and hourly scale factors for the radiation model.
+    samples : None or dict
+        A dictionary containing the generated samples. The keys are tuples of (hour, realization)
+        and the values are scipy.sparse COO matrices containing the sampled values. None, until
+        the generate_sample method has been called.
     '''
 
     def __init__(self, msoas, day_type):
@@ -91,7 +113,7 @@ class ODSampler(OriginDestination):
         ----------
         hours : int or list of int
             The hours for which to obtain samples.
-        n_realizations : int (> 0)
+        n_realizations : int, > 0
             The number of realizations to generate for each hour.
 
         Raises
@@ -104,9 +126,9 @@ class ODSampler(OriginDestination):
         Returns
         -------
         hours : list of int
-            The hours in a list
+            The hours in a list.
         n_realizations : int
-            The number of realizations
+            The number of realizations.
         '''
 
         if not hasattr(hours, '__len__'):
@@ -125,19 +147,19 @@ class ODSampler(OriginDestination):
     @staticmethod
     def sparse_poisson_sample(unscaled_mean, theta):
         '''
-        Sample from a poisson distribution with mean given by theta * unscaled_mean.
+        Sample from a Poisson distribution with mean given by theta * unscaled_mean.
 
         Parameters
         ----------
         unscaled_mean : np.ndarray
-            The unscaled means
+            The unscaled means of the Poisson distribution.
         theta : numeric
-            Scale factor
+            Scale factor.
 
         Returns
         -------
-        S_sparse : scipy.sparse matrix in coo format
-            Contains the Poisson sampled values
+        sparse_samples : scipy.sparse matrix in COOrdinate format.
+            The Poisson sampled values.
         '''
 
         sample = np.random.poisson(theta*unscaled_mean).astype(np.int16)
@@ -154,19 +176,19 @@ class ODSampler(OriginDestination):
         hours : int or list of int
             The hours for which to generate samples.
         n_realizations : int, optional
-            The number of realizations to generate for each hour. The default is 1.
-        client : TYPE, optional
+            The number of realizations to generate for each hour. Default is 1.
+        client : dask.distributed Client, optional
             Used to perform the radiation model sampling in parallel.
-        check_inputs : bool, optional
+        check_inputs : boolean, optional
             Whether to check the hours and n_realizations arguments before performing the sampling.
-            The default is True.
+            Default is True.
 
         Returns
         -------
         sample : list
-            A list of scipy.sparse coo matrices containing the sampled values from the radiation
-            model. The first n_realization matrices correspond to the first hour in the hours
-            argument, the next n_realization matrices correspond to the second hour etc.
+            A list of scipy.sparse COO matrices containing the sampled values from the radiation
+            model. The first n_realization matrices correspond to the first hour of hours,
+            the next n_realization matrices correspond to the second hour etc.
         '''
 
         if check_inputs:
@@ -179,8 +201,9 @@ class ODSampler(OriginDestination):
                       for _ in range(n_realizations)]
         else:
             # parallel
-            delayed_mean = delayed(self.radiation_data.mean)
-            delayed_sample = [delayed(self.sparse_poisson_sample)(delayed_mean, theta)
+            #delayed_mean = delayed(self.radiation_data.mean)
+            scattered_mean = client.scatter(self.radiation_data.mean, broadcast=True)
+            delayed_sample = [delayed(self.sparse_poisson_sample)(scattered_mean, theta)
                               for theta in self.radiation_data.theta[hours]
                               for _ in range(n_realizations)]
             sample = compute(*delayed_sample, client=client)
@@ -191,7 +214,7 @@ class ODSampler(OriginDestination):
         '''
         Sample from a negative-binomial distribution using the Fourier series mean (mean) and
         overdispersion parameter (k) for a given hour. The variance of the negative-binomial
-        distribution is given by var = mean + k*mean**2.
+        distribution is equal to mean + k*mean^2.
 
         Parameters
         ----------
@@ -200,8 +223,8 @@ class ODSampler(OriginDestination):
 
         Returns
         -------
-        S_sparse : scipy.sparse matrix in coo format
-            Contains the negative-binomial sampled values
+        sparse_samples : scipy.sparse matrix in COOrdinate format.
+            The negative-binomial sampled values.
         '''
 
         mean = self.fourier_data.mean[hour]
@@ -223,17 +246,17 @@ class ODSampler(OriginDestination):
         hours : int or list of int
             The hours for which to generate samples.
         n_realizations : int, optional
-            The number of realizations to generate for each hour. The default is 1.
-        check_inputs : bool, optional
-            Whether to check the hours and n_realizations arguments before performing the sampleing.
-            The default is True.
+            The number of realizations to generate for each hour. Default is 1.
+        check_inputs : boolean, optional
+            Whether to check the hours and n_realizations arguments before performing the sampling.
+            Default is True.
 
         Returns
         -------
         sample : list
-            A list of scipy.sparse coo matrices containing the sampled values from the Fourier
-            series model. The first n_realization matrices correspond to the first hour in the hours
-            argument, the next n_realization matrices correspond to the second hour etc.
+            A list of scipy.sparse COO matrices containing the sampled values from the Fourier
+            series model. The first n_realization matrices correspond to the first hour of hours,
+            the next n_realization matrices correspond to the second hour etc.
         '''
 
         if check_inputs:
@@ -252,31 +275,25 @@ class ODSampler(OriginDestination):
         hours : int or list of int
             The hours for which to generate samples.
         n_realizations : int, optional
-            The number of realizations to generate for each hour. The default is 1.
-        client : TYPE, optional
+            The number of realizations to generate for each hour. Default is 1.
+        client : dask.distributed Client, optional
             Used to perform the radiation model sampling in parallel.
-        save_sample : bool or string/pathlib.Path, optional
+        save_sample : boolean or string/pathlib.Path, optional
             If False, samples are not saved.
             If True, samples are saved in the current working directory.
-            If string/pathlib.Path, samples are saved to this directory
+            If a string/pathlib.Path is provided, samples are saved to that directory.
 
         Raises
         ------
         TypeError
-            If save_sample is not a bool or a suitable path.
+            If save_sample is not a boolean or a suitable path.
         FileNotFoundError
             If the directory specified by save_sample does not exist.
 
         Returns
         -------
-        pathlib.Path
-            If save_sample=True, returns the file path.
-        otherwise
-            None.
-
-        Assigns a dictionary containing the samples to .samples attribute. The key (x, y) can be
-        used to extract the scipy.sparse coo matrix that contains the sampled values for hour x and
-        realization y.
+        save_path : pathlib.Path
+            Returns the file path if save_sample is True, otherwise returns None.
         '''
 
         # checks on the path for saving
@@ -334,27 +351,21 @@ class ODSampler(OriginDestination):
             The hour of the sample to convert.
         realization : int
             The realization of the sample to convert.
-        wide : bool, optional
-            Whether to return the pandas DataFrame in wide format. The default is False
+        wide : boolean, optional
+            Whether to return the pandas DataFrame in wide format. Default is False
 
         Raises
         ------
         TypeError
-            If the hour or realization are not integers
+            If the hour or realization are not integers.
         KeyError
             If (hour, realization) is not a key in the dictionary of samples.
 
         Returns
         -------
-        pd.DataFrame
-            A dataframe containing the start MSOA, end MSOA and number of journeys between them for
-            all pairs of MSOAs with a non-zero number of journeys.
-
-            If wide=False: the dataframe contains 3 columns for the start MSOA, end MSOA and number
-                           of journeys.
-            If wide=True: the dataframe has shape (len(msoas), len(msoas)), the index represents the
-                          start MSOA, the columns represent the end MSOA, and the values are the
-                          numbers of journeys.
+        samples : pd.DataFrame
+            If wide is False, the dataframe contains 3 columns for the start MSOA, end MSOA and number
+            of journeys. If wide is True, the same dataframe is returned, but in wide format.
         '''
 
         if not isinstance(hour, int):
@@ -482,6 +493,25 @@ class ODSampler(OriginDestination):
 class ODLoader(OriginDestination):
     '''
     Class for loading existing samples from a netCDF4 file.
+
+    Parameters
+    ----------
+    file : string or pathlib.Path
+        The full file path of the netCDF4 file containing the existing samples.
+
+    Attributes
+    ----------
+    file : pathlib.Path
+        The full file path of the netCDF4 file containing the existing samples.
+    hour_to_index : dict
+        A mapping between hour and the index of the start and end indices
+        required to extract the correct journey numbers.
+    hours : list
+        The hours for which samples are available.
+    n_realizations : int
+        The number of realizations available for each hour.
+    msoas : np.ndarray
+        The MSOAs used to generate the samples
     '''
 
     def __init__(self, file):
@@ -533,19 +563,19 @@ class ODLoader(OriginDestination):
 
     def load_sample(self, hour, realization=None, as_pandas=True, wide=False):
         '''
-        Load a single sample for a specific hour.
+        Loads a single sample for a specific hour.
 
         Parameters
         ----------
         hour : int
-            The hour for which to load the sample
+            The hour for which to load the sample, must be between 0 and 23.
         realization : int, optional
-            The sample number. If None, a realization is selected at random
-        as_pandas : bool, optional
+            The sample number, must be greater than or equal to 0. If None, a realization is selected at random.
+        as_pandas : boolean, optional
             Whether to return the sample as a pandas DataFrame with the row/column indices replaced
-            with the corresponding start/end MSOA codes. The default is True.
-        wide : bool, optional
-            Whether to return the pandas DataFrame in wide format. The default is False
+            with the corresponding start/end MSOA codes. Default is True.
+        wide : boolean, optional
+            Whether to return the pandas DataFrame in wide format. Default is False.
 
         Raises
         ------
@@ -556,21 +586,11 @@ class ODLoader(OriginDestination):
 
         Returns
         -------
-        If as_pandas=True and wide=False:
-            pd.DataFrame: A dataframe with 3 columns corresponding to the start MSOA code,
-                          end MSOA code, and the sampled number of journeys between them.
-
-        If as_pandas=True and wide=True:
-            pd.DataFrame: the dataframe has shape (len(msoas), len(msoas)), the index represents the
-                          start MSOA, the columns represent the end MSOA, and the values are the
-                          numbers of journeys.
-
-        If as_pandas=False:
-            np.ndarray: An array with 3 columns. The first 2 columns contain the indices of the
-                        start and end MSOAs within self.msoas. The final column contains the
-                        number of journeys between each pair.
-
-        In all cases, only pairs with a non-zero number of journeys are included.
+        samples : pd.DataFrame or np.ndarray.
+            If as_pandas is True, returns the default dataframe containing 3 columns for the start MSOA, end MSOA 
+            and number of journeys. If wide is also True, returns the same dataframe in wide format. If as_pandas 
+            is False, returns an array with 3 columns - the first 2 contain the indices of the start and end MSOAs 
+            and the final column contains the number of journeys between them.
         '''
 
         # checks on inputs
