@@ -1,0 +1,63 @@
+name: build-book
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build-book:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch tag annotations
+        run: |
+          # Fetch tag manually because fetch-tags option for checkout@v4 does not work
+          git fetch --force --tags --depth 1
+      - id: read_tag
+        name: Set VERSION env variable
+        if: ${{ startsWith(github.ref, 'refs/tags') }}
+        run: |
+          # Set tag from GitHub: using git describe for tags inside the run script
+          # seems not working
+          echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+              steps:
+
+      # install python
+      - name: Set up Python 3.11
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      # set up gemmm
+      - name: Install gemmm
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+
+      # install dependencies
+      - name: Install documentation dependencies
+        run: |
+          pip install -r docs/requirements.txt
+
+      # build the book
+      - name: Build the book
+        run: |
+          jupyter-book build docs
+
+      # deploy book to github-pages
+       # deploy book to github-pages
+      - name: GitHub Pages 
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_build/html
