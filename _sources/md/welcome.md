@@ -17,7 +17,7 @@ and the relevant dependencies, and GeMMM, can be installed
 cd gemmm
 pip install -r requirements.txt
 pip install .
-``
+```
 
 ## Basic usage
 Suppose that you want to simulate the number of journeys that are made between two areas at 8am on a weekday, this can be achieved with the following few lines of code:

@@ -156,8 +156,8 @@
       
     
     
-    <img src="../_static/gemmm_logo_light.png" class="logo__image only-light" alt="GeMMM - Home"/>
-    <script>document.write(`<img src="../_static/gemmm_logo_dark.png" class="logo__image only-dark" alt="GeMMM - Home"/>`);</script>
+    <img src="../_static/gemmm_logo_light_lower.png" class="logo__image only-light" alt="GeMMM - Home"/>
+    <script>document.write(`<img src="../_static/gemmm_logo_dark_lower.png" class="logo__image only-dark" alt="GeMMM - Home"/>`);</script>
   
   
 </a></div>
@@ -342,6 +342,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-documentation-locally">Building the documentation locally</a></li>
 </ul>
             </nav>
@@ -368,21 +369,22 @@ document.write(`
 </pre></div>
 </div>
 <p>and the relevant dependencies, and GeMMM, can be installed</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd gemmm
-pip install -r requirements.txt
-pip install .
-``
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">gemmm</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-usage">
+<h2>Basic usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h2>
+<p>Suppose that you want to simulate the number of journeys that are made between two areas at 8am on a weekday, this can be achieved with the following few lines of code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gemmm</span>
 
-## Basic usage
-Suppose that you want to simulate the number of journeys that are made between two areas at 8am on a weekday, this can be achieved with the following few lines of code:
-```python
-import gemmm
+<span class="n">start_msoa</span> <span class="o">=</span> <span class="s1">&#39;E02000001&#39;</span>
+<span class="n">end_msoa</span> <span class="o">=</span> <span class="s1">&#39;E02000002&#39;</span>
 
-start_msoa = &#39;E02000001&#39;
-end_msoa = &#39;E02000002&#39;
-
-sampler = gemmm.OriginDestination(msoas=[start_msoa, end_msoa], day_type=&#39;weekday&#39;)
-sampler.generate_sample(hours=8)
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">gemmm</span><span class="o">.</span><span class="n">OriginDestination</span><span class="p">(</span><span class="n">msoas</span><span class="o">=</span><span class="p">[</span><span class="n">start_msoa</span><span class="p">,</span> <span class="n">end_msoa</span><span class="p">],</span> <span class="n">day_type</span><span class="o">=</span><span class="s1">&#39;weekday&#39;</span><span class="p">)</span>
+<span class="n">sampler</span><span class="o">.</span><span class="n">generate_sample</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -467,6 +469,7 @@ sampler.generate_sample(hours=8)
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-documentation-locally">Building the documentation locally</a></li>
 </ul>
   </nav></div>

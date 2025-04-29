@@ -13,7 +13,7 @@ In the original radiation model, $\theta_h$ represents the proportion of residen
 
 The map below shows the centroids of MSOAs that are included in the definition of $s_{i,j}$ for a single MSOA pair. Blue dots represent those included when the geodesic distance is used, red dots are the additional MSOAs included when using the road distance, and grey dots are MSOAs excluded by both methods. The extreme difference between methods is particularly apparent when considering coastal MSOAs.
 
-```{image} ../images/radiation_distance.png
+```{image} ../images/radiation_distance_lower.png
 :alt: 
 :width: 50%
 :align: center
