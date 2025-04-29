@@ -50,13 +50,13 @@ class FetchData():
         #downloader_auth = pooch.HTTPDownloader(headers={'Authorization': f'token {github_token}',
         #                                                'Accept': 'application/vnd.github.v4.raw'},
         #                                       progressbar=True)
-        downloader_auth = pooch.HTTPDownloader(progressbar=True)
+        #downloader_auth = pooch.HTTPDownloader(progressbar=True)
 
-        self.fourier_file = goodboy.fetch(f'fourier_data_{day_type}.hdf5',
-                                          downloader=downloader_auth)
+        self.fourier_file = goodboy.fetch(f'fourier_data_{day_type}.hdf5')
+                                          #downloader=downloader_auth)
 
-        self.radiation_file = goodboy.fetch(f'radiation_data_{day_type}.hdf5',
-                                            downloader=downloader_auth)
+        self.radiation_file = goodboy.fetch(f'radiation_data_{day_type}.hdf5')
+                                            #downloader=downloader_auth)
         '''
         # for development use only
         self.fourier_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'

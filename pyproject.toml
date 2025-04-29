@@ -4,7 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gemmm"
-dynamic = ["version"]
+
+# dynamic = ["version"]
+version = "0.0.9"
+
 requires-python = ">= 3.11"
 
 dependencies = [
@@ -40,5 +43,5 @@ readme = {file = ["README.rst"]}
 [project.urls]
 Homepage = "https://github.com/ukhsa-collaboration/Gemmm"
 
-[tool.setuptools_scm]
+# [tool.setuptools_scm]
 
