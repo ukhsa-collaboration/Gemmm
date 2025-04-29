@@ -24,9 +24,9 @@ class FetchData():
     '''
 
     def __init__(self, msoas, day_type):
-        data_url = 'https://api.github.com/repos/ukhsa-collaboration/Gemmm/contents/model_data/'
+        #data_url = 'https://api.github.com/repos/ukhsa-collaboration/Gemmm/contents/model_data/'
+        data_url = 'https://github.com/ukhsa-collaboration/Gemmm/raw/refs/heads/main/model_data/'
         cache_dir = 'gemmm-model-data'
-        github_token = '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' # valid until 25/5/2025
 
         goodboy = pooch.create(
             path = pooch.os_cache(cache_dir),
@@ -47,9 +47,10 @@ class FetchData():
                         }
                 )
 
-        downloader_auth = pooch.HTTPDownloader(headers={'Authorization': f'token {github_token}',
-                                                        'Accept': 'application/vnd.github.v4.raw'},
-                                               progressbar=True)
+        #downloader_auth = pooch.HTTPDownloader(headers={'Authorization': f'token {github_token}',
+        #                                                'Accept': 'application/vnd.github.v4.raw'},
+        #                                       progressbar=True)
+        downloader_auth = pooch.HTTPDownloader(progressbar=True)
 
         self.fourier_file = goodboy.fetch(f'fourier_data_{day_type}.hdf5',
                                           downloader=downloader_auth)
