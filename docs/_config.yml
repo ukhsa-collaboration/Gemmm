@@ -44,8 +44,8 @@ sphinx:
     add_module_names: True
     html_theme_options:
       logo:
-        image_light: images/gemmm_logo_light.png
-        image_dark: images/gemmm_logo_dark.png
+        image_light: images/gemmm_logo_light_lower.png
+        image_dark: images/gemmm_logo_dark_lower.png
       extra_footer: |
         <div>
           &copy Crown Copyright 2025

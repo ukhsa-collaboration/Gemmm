@@ -21,6 +21,7 @@ dependencies = [
   "netCDF4>=1.6.0",
   "h5py>=3.11.0",
   "tqdm>=4.66.5"
+  "pip-system-certs>=4.0"
 ]
 
 authors = [

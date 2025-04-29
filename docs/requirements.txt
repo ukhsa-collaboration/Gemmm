@@ -8,6 +8,7 @@ pooch>=1.8.2
 netCDF4>=1.6.0
 h5py>=3.11.0
 tqdm>=4.66.5
+pip-system-certs>=4.0
 sphinx>=5.0.0
 sphinx_rtd_theme>=1.1.0
 docutils>=0.17.1

@@ -26,7 +26,7 @@ By combining the Fourier series and radiation models, we are able to sample hour
 
    The observed distributions of $S_{\text{in}}^h$ and $S_{\text{out}}^h$ (grey) can be compared to the modelled distributions of $\hat{S}_{\text{in}}^h$ and $\hat{S}_{\text{out}}^h$ (red) using the two-sample Kolmogorov-Smirnov (KS) test statistic. The higher KS test-statistic between midnight and 6am is an indicator of poorer performance during these hours.
 
-   ```{image} ../images/performance_flows.png
+   ```{image} ../images/performance_flows_lower.png
    :alt: 
    :width: 100%
    :align: center
@@ -43,7 +43,7 @@ By combining the Fourier series and radiation models, we are able to sample hour
 
    Its value lies between zero and one, with one indicating that the model perfectly reflects the true movement patterns{cite}`simini2021deep`. The lower scores during night-time hours are consistent with observations from the previous two summary statistics.
 
-   ```{image} ../images/performance_cpc.png
+   ```{image} ../images/performance_cpc_lower.png
    :alt: 
    :width: 50%
    :align: center
