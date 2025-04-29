@@ -1,0 +1,1271 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Using GeMMM &#8212; GeMMM</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/example';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bibliography" href="../md/bib.html" />
+    <link rel="prev" title="Model performance" href="../md/performance.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../md/welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/gemmm_logo_light.png" class="logo__image only-light" alt="GeMMM - Home"/>
+    <script>document.write(`<img src="../_static/gemmm_logo_dark.png" class="logo__image only-dark" alt="GeMMM - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../md/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/data.html">Telecoms data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/fourier.html">Fourier series model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/radiation.html">Radiation model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/performance.html">Model performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using GeMMM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../md/bib.html">Bibliography</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../rst/autodoc-model.html">model</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/example.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Using GeMMM</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-and-loading-samples">Saving and loading samples</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="using-gemmm">
+<h1>Using GeMMM<a class="headerlink" href="#using-gemmm" title="Link to this heading">#</a></h1>
+<p>In this notebook we demonstrate how GeMMM can be used to sample origin-destination matrices for a specific set of MSOAs.</p>
+<p>A table of available MSOAs is provided in the <code class="docutils literal notranslate"><span class="pre">tables</span></code> module. This includes additional information such as the Local Authority District (LAD), region and country that may be relevant when journey numbers are required for a larger area. For MSOAs in Wales and Scotland, the region and LAD columns are equivalent.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gemmm.tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">gb_msoas</span>
+<span class="n">gb_msoas</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>msoa</th>
+      <th>msoa_name</th>
+      <th>lad</th>
+      <th>lad_name</th>
+      <th>region</th>
+      <th>region_name</th>
+      <th>country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>E02000001</td>
+      <td>City of London 001</td>
+      <td>E09000001</td>
+      <td>City of London</td>
+      <td>E12000007</td>
+      <td>London</td>
+      <td>England</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>E02000002</td>
+      <td>Barking and Dagenham 001</td>
+      <td>E09000002</td>
+      <td>Barking and Dagenham</td>
+      <td>E12000007</td>
+      <td>London</td>
+      <td>England</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>E02000003</td>
+      <td>Barking and Dagenham 002</td>
+      <td>E09000002</td>
+      <td>Barking and Dagenham</td>
+      <td>E12000007</td>
+      <td>London</td>
+      <td>England</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>E02000004</td>
+      <td>Barking and Dagenham 003</td>
+      <td>E09000002</td>
+      <td>Barking and Dagenham</td>
+      <td>E12000007</td>
+      <td>London</td>
+      <td>England</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>E02000005</td>
+      <td>Barking and Dagenham 004</td>
+      <td>E09000002</td>
+      <td>Barking and Dagenham</td>
+      <td>E12000007</td>
+      <td>London</td>
+      <td>England</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<br>
+Suppose that we are interested in generating journey numbers for MSOAs located within the Cambridge LAD.
+<p>We can pull out the codes of MSOAs that satisfy this condition from the previous table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LAD_NAME</span> <span class="o">=</span> <span class="s1">&#39;Cambridge&#39;</span>
+<span class="n">msoas</span> <span class="o">=</span> <span class="n">gb_msoas</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;lad_name==@LAD_NAME&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">msoa</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To sample journey numbers, we first provide the <code class="docutils literal notranslate"><span class="pre">OriginDestination</span></code> class with this array of MSOAs and a day type, either weekday or weekend.</p>
+<p>When running this for the first time, GeMMM will download <a class="reference external" href="https://github.com/ukhsa-collaboration/Gemmm/tree/main/model_data/">data files</a> required by the Fourier series and radiation models for each day type. These are cached for future use.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gemmm</span><span class="w"> </span><span class="kn">import</span> <span class="n">OriginDestination</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">OriginDestination</span><span class="p">(</span><span class="n">msoas</span><span class="o">=</span><span class="n">msoas</span><span class="p">,</span> <span class="n">day_type</span><span class="o">=</span><span class="s1">&#39;weekday&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading file &#39;fourier_data_weekday.hdf5&#39; from &#39;https://github.com/ukhsa-collaboration/Gemmm/raw/refs/heads/main/model_data/fourier_data_weekday.hdf5&#39; to &#39;/home/runner/.cache/gemmm-model-data&#39;.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|                                              | 0.00/38.9M [00:00&lt;?, ?B/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 21%|███████▋                             | 8.03M/38.9M [00:00&lt;00:00, 80.3MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 43%|███████████████▊                     | 16.6M/38.9M [00:00&lt;00:00, 83.4MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 65%|███████████████████████▉             | 25.1M/38.9M [00:00&lt;00:00, 84.2MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 87%|████████████████████████████████▏    | 33.8M/38.9M [00:00&lt;00:00, 85.2MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|                                              | 0.00/38.9M [00:00&lt;?, ?B/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████| 38.9M/38.9M [00:00&lt;00:00, 50.3GB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading file &#39;radiation_data_weekday.hdf5&#39; from &#39;https://github.com/ukhsa-collaboration/Gemmm/raw/refs/heads/main/model_data/radiation_data_weekday.hdf5&#39; to &#39;/home/runner/.cache/gemmm-model-data&#39;.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|                                              | 0.00/95.4M [00:00&lt;?, ?B/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  9%|███▏                                 | 8.14M/95.4M [00:00&lt;00:01, 81.4MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 18%|██████▌                              | 17.0M/95.4M [00:00&lt;00:00, 85.4MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 27%|█████████▉                           | 25.7M/95.4M [00:00&lt;00:00, 86.2MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 36%|█████████████▍                       | 34.5M/95.4M [00:00&lt;00:00, 87.2MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 45%|████████████████▊                    | 43.3M/95.4M [00:00&lt;00:00, 87.3MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 55%|████████████████████▏                | 52.1M/95.4M [00:00&lt;00:00, 87.6MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 64%|███████████████████████▌             | 60.9M/95.4M [00:00&lt;00:00, 87.2MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 73%|██████████████████████████▉          | 69.6M/95.4M [00:00&lt;00:00, 86.7MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 82%|██████████████████████████████▎      | 78.3M/95.4M [00:00&lt;00:00, 87.0MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 91%|█████████████████████████████████▋   | 87.0M/95.4M [00:01&lt;00:00, 86.5MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|                                              | 0.00/95.4M [00:00&lt;?, ?B/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████| 95.4M/95.4M [00:00&lt;00:00, 128GB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>With this, we can now sample journey numbers for a single hour of the day or list of hours. Here, <code class="docutils literal notranslate"><span class="pre">n_realizations</span></code> specifies the number of realizations that will be generated for each hour.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sampler</span><span class="o">.</span><span class="n">generate_sample</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="n">n_realizations</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Samples are stored as a dictionary in <code class="docutils literal notranslate"><span class="pre">X.samples</span></code> with keys given by the tuple <em>(x, y)</em>, where <em>x</em> is the hour and <em>y</em> is the realization number. Note that the numbering of realizations begins with zero.</p>
+<p>Since the origin-destination matrices contain a high proportion of zeros when considering MSOAs over a large area, the generated matrices are stored in sparse matrix format. Specifically, the COOrdinate format is used, where the row attribute contains the indices of the start MSOAs, the col attribute contains the indices of the end MSOA, and the data attribute contains the number of journeys. The indices of the MSOAs refer to their position in the list originally provided to the <code class="docutils literal notranslate"><span class="pre">OriginDestination</span></code> class.</p>
+<p>To present the output in a more readable format, the matrices can be converted to pandas DataFrames.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sampler</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">realization</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">wide</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="13" halign="left">journeys</th>
+    </tr>
+    <tr>
+      <th>end_msoa</th>
+      <th>E02003719</th>
+      <th>E02003720</th>
+      <th>E02003721</th>
+      <th>E02003722</th>
+      <th>E02003723</th>
+      <th>E02003724</th>
+      <th>E02003725</th>
+      <th>E02003726</th>
+      <th>E02003727</th>
+      <th>E02003728</th>
+      <th>E02003729</th>
+      <th>E02003730</th>
+      <th>E02003731</th>
+    </tr>
+    <tr>
+      <th>start_msoa</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>E02003719</th>
+      <td>227.0</td>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>7.0</td>
+      <td>57.0</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>20.0</td>
+      <td>5.0</td>
+      <td>25.0</td>
+      <td>11.0</td>
+    </tr>
+    <tr>
+      <th>E02003720</th>
+      <td>2.0</td>
+      <td>321.0</td>
+      <td>12.0</td>
+      <td>2.0</td>
+      <td>7.0</td>
+      <td>18.0</td>
+      <td>60.0</td>
+      <td>9.0</td>
+      <td>6.0</td>
+      <td>38.0</td>
+      <td>8.0</td>
+      <td>55.0</td>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>E02003721</th>
+      <td>3.0</td>
+      <td>6.0</td>
+      <td>335.0</td>
+      <td>0.0</td>
+      <td>7.0</td>
+      <td>12.0</td>
+      <td>37.0</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>14.0</td>
+      <td>7.0</td>
+      <td>31.0</td>
+      <td>33.0</td>
+    </tr>
+    <tr>
+      <th>E02003722</th>
+      <td>2.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>402.0</td>
+      <td>2.0</td>
+      <td>5.0</td>
+      <td>14.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>9.0</td>
+      <td>9.0</td>
+      <td>25.0</td>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>E02003723</th>
+      <td>5.0</td>
+      <td>7.0</td>
+      <td>6.0</td>
+      <td>2.0</td>
+      <td>418.0</td>
+      <td>6.0</td>
+      <td>15.0</td>
+      <td>8.0</td>
+      <td>1.0</td>
+      <td>17.0</td>
+      <td>1.0</td>
+      <td>26.0</td>
+      <td>18.0</td>
+    </tr>
+    <tr>
+      <th>E02003724</th>
+      <td>5.0</td>
+      <td>6.0</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>7.0</td>
+      <td>518.0</td>
+      <td>66.0</td>
+      <td>8.0</td>
+      <td>4.0</td>
+      <td>25.0</td>
+      <td>14.0</td>
+      <td>47.0</td>
+      <td>47.0</td>
+    </tr>
+    <tr>
+      <th>E02003725</th>
+      <td>17.0</td>
+      <td>20.0</td>
+      <td>18.0</td>
+      <td>5.0</td>
+      <td>11.0</td>
+      <td>29.0</td>
+      <td>983.0</td>
+      <td>14.0</td>
+      <td>8.0</td>
+      <td>32.0</td>
+      <td>14.0</td>
+      <td>57.0</td>
+      <td>35.0</td>
+    </tr>
+    <tr>
+      <th>E02003726</th>
+      <td>6.0</td>
+      <td>5.0</td>
+      <td>6.0</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>16.0</td>
+      <td>396.0</td>
+      <td>3.0</td>
+      <td>6.0</td>
+      <td>9.0</td>
+      <td>12.0</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>E02003727</th>
+      <td>5.0</td>
+      <td>6.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>15.0</td>
+      <td>1.0</td>
+      <td>20.0</td>
+      <td>2.0</td>
+      <td>349.0</td>
+      <td>5.0</td>
+      <td>4.0</td>
+      <td>19.0</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>E02003728</th>
+      <td>16.0</td>
+      <td>7.0</td>
+      <td>16.0</td>
+      <td>6.0</td>
+      <td>14.0</td>
+      <td>11.0</td>
+      <td>44.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+      <td>345.0</td>
+      <td>14.0</td>
+      <td>24.0</td>
+      <td>14.0</td>
+    </tr>
+    <tr>
+      <th>E02003729</th>
+      <td>21.0</td>
+      <td>3.0</td>
+      <td>19.0</td>
+      <td>7.0</td>
+      <td>7.0</td>
+      <td>9.0</td>
+      <td>70.0</td>
+      <td>1.0</td>
+      <td>7.0</td>
+      <td>11.0</td>
+      <td>313.0</td>
+      <td>23.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>E02003730</th>
+      <td>22.0</td>
+      <td>16.0</td>
+      <td>30.0</td>
+      <td>14.0</td>
+      <td>23.0</td>
+      <td>23.0</td>
+      <td>119.0</td>
+      <td>8.0</td>
+      <td>7.0</td>
+      <td>27.0</td>
+      <td>29.0</td>
+      <td>726.0</td>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>E02003731</th>
+      <td>11.0</td>
+      <td>3.0</td>
+      <td>7.0</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>11.0</td>
+      <td>39.0</td>
+      <td>5.0</td>
+      <td>6.0</td>
+      <td>4.0</td>
+      <td>3.0</td>
+      <td>18.0</td>
+      <td>558.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<br>
+Sometimes it may be useful to know average journey numbers rather than sampled values. These averages can be extracted from the Fourier series and radiation model data for a specific hour.<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">hour</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">fourier_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">msoas</span><span class="p">),)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fourier_mean</span><span class="p">[</span><span class="n">sampler</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">mean</span><span class="p">[</span><span class="n">hour</span><span class="p">]</span>
+
+<span class="n">radiation_mean</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">radiation_data</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="n">hour</span><span class="p">]</span> <span class="o">*</span> <span class="n">sampler</span><span class="o">.</span><span class="n">radiation_data</span><span class="o">.</span><span class="n">mean</span>
+
+<span class="n">model_mean</span> <span class="o">=</span> <span class="n">fourier_mean</span> <span class="o">+</span> <span class="n">radiation_mean</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="saving-and-loading-samples">
+<h2>Saving and loading samples<a class="headerlink" href="#saving-and-loading-samples" title="Link to this heading">#</a></h2>
+<p>In some instances, it is convenient to save the generated matrices for use later. In GeMMM, this can be achieved using the <code class="docutils literal notranslate"><span class="pre">save_sample</span></code> argument when generating the samples. If True, the samples will be saved in the current directory, otherwise the path to a specific directory must be provided. The filename is automatically set using a timestamp and the day type.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">save_file</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">generate_sample</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="n">n_realizations</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">save_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saving samples to weekday_samples_2025-04-29--08-40-34.nc
+</pre></div>
+</div>
+</div>
+</div>
+<p>To load the samples, we again use the <code class="docutils literal notranslate"><span class="pre">OriginDestination</span></code> class, but this time provide the full file path.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loader</span> <span class="o">=</span> <span class="n">OriginDestination</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">save_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Available hours: 8, 12, 16
+Number of realizations: 5
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can then load a matrix for one of the available hours. If a realization is not specified, one will be selected at random.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loader</span><span class="o">.</span><span class="n">load_sample</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">realization</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">wide</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="13" halign="left">journeys</th>
+    </tr>
+    <tr>
+      <th>end_msoa</th>
+      <th>E02003719</th>
+      <th>E02003720</th>
+      <th>E02003721</th>
+      <th>E02003722</th>
+      <th>E02003723</th>
+      <th>E02003724</th>
+      <th>E02003725</th>
+      <th>E02003726</th>
+      <th>E02003727</th>
+      <th>E02003728</th>
+      <th>E02003729</th>
+      <th>E02003730</th>
+      <th>E02003731</th>
+    </tr>
+    <tr>
+      <th>start_msoa</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>E02003719</th>
+      <td>240.0</td>
+      <td>7.0</td>
+      <td>7.0</td>
+      <td>3.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>34.0</td>
+      <td>6.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>13.0</td>
+      <td>13.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>E02003720</th>
+      <td>5.0</td>
+      <td>272.0</td>
+      <td>8.0</td>
+      <td>7.0</td>
+      <td>4.0</td>
+      <td>13.0</td>
+      <td>27.0</td>
+      <td>10.0</td>
+      <td>6.0</td>
+      <td>12.0</td>
+      <td>8.0</td>
+      <td>12.0</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>E02003721</th>
+      <td>8.0</td>
+      <td>14.0</td>
+      <td>305.0</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>8.0</td>
+      <td>26.0</td>
+      <td>5.0</td>
+      <td>7.0</td>
+      <td>14.0</td>
+      <td>8.0</td>
+      <td>23.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>E02003722</th>
+      <td>4.0</td>
+      <td>6.0</td>
+      <td>4.0</td>
+      <td>285.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>7.0</td>
+      <td>10.0</td>
+      <td>14.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>E02003723</th>
+      <td>2.0</td>
+      <td>7.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>389.0</td>
+      <td>12.0</td>
+      <td>16.0</td>
+      <td>1.0</td>
+      <td>8.0</td>
+      <td>6.0</td>
+      <td>5.0</td>
+      <td>19.0</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>E02003724</th>
+      <td>8.0</td>
+      <td>14.0</td>
+      <td>11.0</td>
+      <td>9.0</td>
+      <td>8.0</td>
+      <td>341.0</td>
+      <td>46.0</td>
+      <td>9.0</td>
+      <td>8.0</td>
+      <td>13.0</td>
+      <td>12.0</td>
+      <td>25.0</td>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>E02003725</th>
+      <td>41.0</td>
+      <td>67.0</td>
+      <td>43.0</td>
+      <td>15.0</td>
+      <td>34.0</td>
+      <td>71.0</td>
+      <td>1099.0</td>
+      <td>44.0</td>
+      <td>24.0</td>
+      <td>66.0</td>
+      <td>62.0</td>
+      <td>139.0</td>
+      <td>55.0</td>
+    </tr>
+    <tr>
+      <th>E02003726</th>
+      <td>11.0</td>
+      <td>9.0</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+      <td>5.0</td>
+      <td>23.0</td>
+      <td>298.0</td>
+      <td>5.0</td>
+      <td>10.0</td>
+      <td>0.0</td>
+      <td>23.0</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>E02003727</th>
+      <td>4.0</td>
+      <td>6.0</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>10.0</td>
+      <td>11.0</td>
+      <td>4.0</td>
+      <td>315.0</td>
+      <td>5.0</td>
+      <td>4.0</td>
+      <td>21.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>E02003728</th>
+      <td>13.0</td>
+      <td>19.0</td>
+      <td>8.0</td>
+      <td>12.0</td>
+      <td>9.0</td>
+      <td>23.0</td>
+      <td>52.0</td>
+      <td>9.0</td>
+      <td>6.0</td>
+      <td>375.0</td>
+      <td>19.0</td>
+      <td>33.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>E02003729</th>
+      <td>5.0</td>
+      <td>9.0</td>
+      <td>10.0</td>
+      <td>9.0</td>
+      <td>5.0</td>
+      <td>14.0</td>
+      <td>14.0</td>
+      <td>9.0</td>
+      <td>4.0</td>
+      <td>2.0</td>
+      <td>280.0</td>
+      <td>29.0</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>E02003730</th>
+      <td>42.0</td>
+      <td>30.0</td>
+      <td>36.0</td>
+      <td>18.0</td>
+      <td>27.0</td>
+      <td>35.0</td>
+      <td>114.0</td>
+      <td>13.0</td>
+      <td>14.0</td>
+      <td>19.0</td>
+      <td>32.0</td>
+      <td>666.0</td>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>E02003731</th>
+      <td>11.0</td>
+      <td>25.0</td>
+      <td>23.0</td>
+      <td>11.0</td>
+      <td>10.0</td>
+      <td>41.0</td>
+      <td>42.0</td>
+      <td>13.0</td>
+      <td>11.0</td>
+      <td>16.0</td>
+      <td>14.0</td>
+      <td>31.0</td>
+      <td>424.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../md/performance.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Model performance</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../md/bib.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Bibliography</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-and-loading-samples">Saving and loading samples</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By UK Health Security Agency
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  &copy Crown Copyright 2025
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

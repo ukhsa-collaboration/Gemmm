@@ -1,0 +1,1026 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>gemmm.model &#8212; GeMMM</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/gemmm/model';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../md/welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/gemmm_logo_light.png" class="logo__image only-light" alt="GeMMM - Home"/>
+    <script>document.write(`<img src="../../_static/gemmm_logo_dark.png" class="logo__image only-dark" alt="GeMMM - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../md/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../md/data.html">Telecoms data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../md/fourier.html">Fourier series model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../md/radiation.html">Radiation model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../md/performance.html">Model performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/example.html">Using GeMMM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../md/bib.html">Bibliography</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../rst/autodoc-model.html">model</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for gemmm.model</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Generate sampled flows between pairs of MSOAs or load samples from an existing file.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">netCDF4</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dask</span><span class="w"> </span><span class="kn">import</span> <span class="n">delayed</span><span class="p">,</span> <span class="n">compute</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.fetch_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">FetchData</span>
+
+
+<div class="viewcode-block" id="OriginDestination">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.OriginDestination">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OriginDestination</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Class for either generating or loading samples depending on the arguments provided.</span>
+<span class="sd">    Sampling is performed if msoas and day_type are provided, otherwise a file containing</span>
+<span class="sd">    existing samples must be provided.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">msoas</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">day_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">ODLoader</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">msoas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">day_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">ODSampler</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s1">&#39;Either provide a path to existing samples or a list of MSOAs &#39;</span>
+                          <span class="s1">&#39;and day_type to generate new samples.&#39;</span><span class="p">))</span></div>
+
+
+
+
+<div class="viewcode-block" id="ODSampler">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODSampler">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ODSampler</span><span class="p">(</span><span class="n">OriginDestination</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Class for generating flows between pairs of MSOAs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    msoas: list or np.ndarray</span>
+<span class="sd">        MSOAs to generate flows between.</span>
+<span class="sd">    day_type: string</span>
+<span class="sd">        The day type samples are being generated for, either &#39;weekday&#39; or &#39;weekend&#39;.</span>
+<span class="sd">        </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    msoas : np.ndarray</span>
+<span class="sd">        MSOAs to generate flows between.</span>
+<span class="sd">    day_type : string</span>
+<span class="sd">        Either &#39;weekday&#39; or &#39;weekend&#39;.</span>
+<span class="sd">    fourier_data : FourierData</span>
+<span class="sd">        Hourly means and overdispersion parameters for the Fourier series model.</span>
+<span class="sd">    radiation_data : RadiationData</span>
+<span class="sd">        Means and hourly scale factors for the radiation model.</span>
+<span class="sd">    samples : None or dict</span>
+<span class="sd">        A dictionary containing the generated samples. The keys are tuples of (hour, realization)</span>
+<span class="sd">        and the values are scipy.sparse COO matrices containing the sampled values. None, until</span>
+<span class="sd">        the generate_sample method has been called.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msoas</span><span class="p">,</span> <span class="n">day_type</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        msoas : list or np.ndarray</span>
+<span class="sd">            MSOAs to generate flows between</span>
+<span class="sd">        day_type : string</span>
+<span class="sd">            Either &quot;weekday&quot; or &quot;weekend&quot;</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If day_type is not a string, or the MSOAs are not provided in a list or np.ndarray.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If day_type is not one of the accepted values, or only a single MSOA is provided.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;day_type must be a str&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">day_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;weekday&#39;</span><span class="p">,</span> <span class="s1">&#39;weekend&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;day_type should be either &#39;weekday&#39; or &#39;weekend&#39;&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">day_type</span> <span class="o">=</span> <span class="n">day_type</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">msoas</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="o">|</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">msoas</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;MSOAs should be provided in a list or numpy array&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msoas</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please provide multiple MSOAs&#39;</span><span class="p">)</span>
+        <span class="n">msoas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">msoas</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">msoas</span> <span class="o">=</span> <span class="n">msoas</span>
+
+        <span class="c1"># Load the data required to run the Fourier series and radiation models</span>
+        <span class="n">fetcher</span> <span class="o">=</span> <span class="n">FetchData</span><span class="p">(</span><span class="n">msoas</span><span class="p">,</span> <span class="n">day_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fourier_data</span> <span class="o">=</span> <span class="n">fetcher</span><span class="o">.</span><span class="n">fetch_fourier</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radiation_data</span> <span class="o">=</span> <span class="n">fetcher</span><span class="o">.</span><span class="n">fetch_radiation</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">samples</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="ODSampler.check_sample_inputs">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODSampler.check_sample_inputs">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_sample_inputs</span><span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Check that the arguments of the sampling methods are appropriate.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        hours : int or list of int</span>
+<span class="sd">            The hours for which to obtain samples.</span>
+<span class="sd">        n_realizations : int, &gt; 0</span>
+<span class="sd">            The number of realizations to generate for each hour.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If the hours or number of realizations are not integers.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the hours are not between 0 and 23, or the number of realizations is not positive.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        hours : list of int</span>
+<span class="sd">            The hours in a list.</span>
+<span class="sd">        n_realizations : int</span>
+<span class="sd">            The number of realizations.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span>
+            <span class="n">hours</span> <span class="o">=</span> <span class="p">[</span><span class="n">hours</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hour</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">hour</span> <span class="ow">in</span> <span class="n">hours</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The hours must all be integers&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span>  <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">23</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The hours must be between 0 and 23&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_realizations</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The number of realizations must be an integer&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_realizations</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The number of realizations must be greater than 0&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span></div>
+
+
+
+<div class="viewcode-block" id="ODSampler.sparse_poisson_sample">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODSampler.sparse_poisson_sample">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sparse_poisson_sample</span><span class="p">(</span><span class="n">unscaled_mean</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sample from a Poisson distribution with mean given by theta * unscaled_mean.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        unscaled_mean : np.ndarray</span>
+<span class="sd">            The unscaled means of the Poisson distribution.</span>
+<span class="sd">        theta : numeric</span>
+<span class="sd">            Scale factor.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sparse_samples : scipy.sparse matrix in COOrdinate format.</span>
+<span class="sd">            The Poisson sampled values.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">theta</span><span class="o">*</span><span class="n">unscaled_mean</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+        <span class="n">sample_sparse</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">coo_matrix</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sample_sparse</span></div>
+
+
+
+<div class="viewcode-block" id="ODSampler.radiation_sample">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODSampler.radiation_sample">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">radiation_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check_inputs</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Generate realizations using the radiation model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        hours : int or list of int</span>
+<span class="sd">            The hours for which to generate samples.</span>
+<span class="sd">        n_realizations : int, optional</span>
+<span class="sd">            The number of realizations to generate for each hour. Default is 1.</span>
+<span class="sd">        client : dask.distributed Client, optional</span>
+<span class="sd">            Used to perform the radiation model sampling in parallel.</span>
+<span class="sd">        check_inputs : boolean, optional</span>
+<span class="sd">            Whether to check the hours and n_realizations arguments before performing the sampling.</span>
+<span class="sd">            Default is True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sample : list</span>
+<span class="sd">            A list of scipy.sparse COO matrices containing the sampled values from the radiation</span>
+<span class="sd">            model. The first n_realization matrices correspond to the first hour of hours,</span>
+<span class="sd">            the next n_realization matrices correspond to the second hour etc.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">check_inputs</span><span class="p">:</span>
+            <span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_sample_inputs</span><span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># serial</span>
+            <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sparse_poisson_sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radiation_data</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+                      <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiation_data</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="n">hours</span><span class="p">]</span>
+                      <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_realizations</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># parallel</span>
+            <span class="c1">#delayed_mean = delayed(self.radiation_data.mean)</span>
+            <span class="n">scattered_mean</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radiation_data</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">delayed_sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">delayed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sparse_poisson_sample</span><span class="p">)(</span><span class="n">scattered_mean</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+                              <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiation_data</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="n">hours</span><span class="p">]</span>
+                              <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_realizations</span><span class="p">)]</span>
+            <span class="n">sample</span> <span class="o">=</span> <span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">delayed_sample</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sample</span></div>
+
+
+
+<div class="viewcode-block" id="ODSampler.sparse_nbinom_sample">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODSampler.sparse_nbinom_sample">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sparse_nbinom_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hour</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sample from a negative-binomial distribution using the Fourier series mean (mean) and</span>
+<span class="sd">        overdispersion parameter (k) for a given hour. The variance of the negative-binomial</span>
+<span class="sd">        distribution is equal to mean + k*mean^2.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        hour : int</span>
+<span class="sd">            The hour for which to generate samples.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sparse_samples : scipy.sparse matrix in COOrdinate format.</span>
+<span class="sd">            The negative-binomial sampled values.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">mean</span><span class="p">[</span><span class="n">hour</span><span class="p">]</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">overdispersion</span><span class="p">[</span><span class="n">hour</span><span class="p">]</span>
+        <span class="n">nb_n</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">k</span>
+        <span class="n">nb_p</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span><span class="o">*</span><span class="n">mean</span><span class="p">)</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">negative_binomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">nb_n</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">nb_p</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+        <span class="n">sample_sparse</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">coo_matrix</span><span class="p">((</span><span class="n">sample</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">col</span><span class="p">)),</span>
+                                      <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msoas</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msoas</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">sample_sparse</span></div>
+
+
+
+<div class="viewcode-block" id="ODSampler.fourier_sample">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODSampler.fourier_sample">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fourier_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">check_inputs</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Generate realizations using the Fourier series model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        hours : int or list of int</span>
+<span class="sd">            The hours for which to generate samples.</span>
+<span class="sd">        n_realizations : int, optional</span>
+<span class="sd">            The number of realizations to generate for each hour. Default is 1.</span>
+<span class="sd">        check_inputs : boolean, optional</span>
+<span class="sd">            Whether to check the hours and n_realizations arguments before performing the sampling.</span>
+<span class="sd">            Default is True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sample : list</span>
+<span class="sd">            A list of scipy.sparse COO matrices containing the sampled values from the Fourier</span>
+<span class="sd">            series model. The first n_realization matrices correspond to the first hour of hours,</span>
+<span class="sd">            the next n_realization matrices correspond to the second hour etc.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">check_inputs</span><span class="p">:</span>
+            <span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_sample_inputs</span><span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">)</span>
+
+        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sparse_nbinom_sample</span><span class="p">(</span><span class="n">hour</span><span class="p">)</span> <span class="k">for</span> <span class="n">hour</span> <span class="ow">in</span> <span class="n">hours</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_realizations</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">sample</span></div>
+
+
+
+<div class="viewcode-block" id="ODSampler.generate_sample">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODSampler.generate_sample">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Generate realizations using the combined Fourier series and radiation model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        hours : int or list of int</span>
+<span class="sd">            The hours for which to generate samples.</span>
+<span class="sd">        n_realizations : int, optional</span>
+<span class="sd">            The number of realizations to generate for each hour. Default is 1.</span>
+<span class="sd">        client : dask.distributed Client, optional</span>
+<span class="sd">            Used to perform the radiation model sampling in parallel.</span>
+<span class="sd">        save_sample : boolean or string/pathlib.Path, optional</span>
+<span class="sd">            If False, samples are not saved.</span>
+<span class="sd">            If True, samples are saved in the current working directory.</span>
+<span class="sd">            If a string/pathlib.Path is provided, samples are saved to that directory.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If save_sample is not a boolean or a suitable path.</span>
+<span class="sd">        FileNotFoundError</span>
+<span class="sd">            If the directory specified by save_sample does not exist.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        save_path : pathlib.Path</span>
+<span class="sd">            Returns the file path if save_sample is True, otherwise returns None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># checks on the path for saving</span>
+        <span class="k">if</span> <span class="n">save_sample</span><span class="p">:</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">--%H-%M-%S&#39;</span><span class="p">)</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">day_type</span><span class="si">}</span><span class="s1">_samples_</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s1">.nc&#39;</span>
+            <span class="n">save_directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">save_sample</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">save_sample</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">save_directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">save_sample</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">save_sample</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
+                    <span class="n">save_directory</span> <span class="o">=</span> <span class="n">save_sample</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">((</span><span class="s1">&#39;the path to the save directory should either &#39;</span>
+                                     <span class="s1">&#39;be a str or pathlib.Path&#39;</span><span class="p">))</span>
+
+                <span class="c1"># check the directory exists</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">save_directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No such directory: </span><span class="si">{</span><span class="n">save_directory</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="n">save_file</span> <span class="o">=</span> <span class="n">save_directory</span> <span class="o">/</span> <span class="n">filename</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Saving samples to </span><span class="si">{</span><span class="n">save_file</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_sample_inputs</span><span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">)</span>
+        <span class="n">radiation_sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiation_sample</span><span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+                                                 <span class="n">check_inputs</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">fourier_sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fourier_sample</span><span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">,</span> <span class="n">check_inputs</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">fourier_sample</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">radiation_sample</span><span class="p">)</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="p">[(</span><span class="n">radiation_sample</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">+</span> <span class="n">fourier_sample</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span><span class="o">.</span><span class="n">tocoo</span><span class="p">()</span>
+                  <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">radiation_sample</span><span class="p">))]</span>
+
+        <span class="c1"># convert to dict with (hour, realization) key for each sample</span>
+        <span class="c1"># makes it easier to retrieve the sample for a specific hour, realization</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[(</span><span class="n">hour</span><span class="p">,</span> <span class="n">realization</span><span class="p">)</span> <span class="k">for</span> <span class="n">hour</span> <span class="ow">in</span> <span class="n">hours</span> <span class="k">for</span> <span class="n">realization</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_realizations</span><span class="p">)]</span>
+
+        <span class="c1"># setting the sample as an attribute make it easier to ensure that to_pandas is using</span>
+        <span class="c1"># a sample that comes from the object that generated it.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">samples</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">sample</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">save_sample</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_netcdf</span><span class="p">(</span><span class="n">save_file</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">msoas</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">save_file</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="ODSampler.to_pandas">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODSampler.to_pandas">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_pandas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">realization</span><span class="p">,</span> <span class="n">wide</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Convert a sample from a sparse matrix to a pandas DataFrame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        hour : int</span>
+<span class="sd">            The hour of the sample to convert.</span>
+<span class="sd">        realization : int</span>
+<span class="sd">            The realization of the sample to convert.</span>
+<span class="sd">        wide : boolean, optional</span>
+<span class="sd">            Whether to return the pandas DataFrame in wide format. Default is False</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If the hour or realization are not integers.</span>
+<span class="sd">        KeyError</span>
+<span class="sd">            If (hour, realization) is not a key in the dictionary of samples.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        samples : pd.DataFrame</span>
+<span class="sd">            If wide is False, the dataframe contains 3 columns for the start MSOA, end MSOA and number</span>
+<span class="sd">            of journeys. If wide is True, the same dataframe is returned, but in wide format.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hour</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The hour must be an integer&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">realization</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The realization must be an integer&#39;</span><span class="p">)</span>
+
+        <span class="n">key_hours</span><span class="p">,</span> <span class="n">key_realizations</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">hour</span><span class="p">,</span> <span class="n">realization</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">sample</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">((</span><span class="s1">&#39;Key does not exist. &#39;</span>
+                            <span class="sa">f</span><span class="s1">&#39;The hour should be in </span><span class="si">{</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">key_hours</span><span class="p">)]</span><span class="si">}</span><span class="s1"> and &#39;</span>
+                            <span class="sa">f</span><span class="s1">&#39;the realziation should be between 0 and </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">key_realizations</span><span class="p">)</span><span class="si">}</span><span class="s1">.&#39;</span>
+                            <span class="p">))</span>
+
+        <span class="n">sample_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;start_msoa&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">msoas</span><span class="p">[</span><span class="n">sample</span><span class="o">.</span><span class="n">row</span><span class="p">],</span>
+                                  <span class="s1">&#39;end_msoa&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">msoas</span><span class="p">[</span><span class="n">sample</span><span class="o">.</span><span class="n">col</span><span class="p">],</span>
+                                  <span class="s1">&#39;journeys&#39;</span><span class="p">:</span> <span class="n">sample</span><span class="o">.</span><span class="n">data</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">wide</span><span class="p">:</span>
+            <span class="c1"># convert to wide format using pivot_table</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">sample_df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;end_msoa&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;start_msoa&#39;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sample_df</span></div>
+
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_save_netcdf</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">samples</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">n_realizations</span><span class="p">,</span> <span class="n">msoas</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Save samples to a netCD4 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        file : pathlib.Path</span>
+<span class="sd">            The file in which to save the samples.</span>
+<span class="sd">        samples : list</span>
+<span class="sd">            Contains scipy.sparse coo matrices of the sampled values</span>
+<span class="sd">        hours : list</span>
+<span class="sd">            Contains the hours for which the samples were obtained</span>
+<span class="sd">        n_realizations : int</span>
+<span class="sd">            The number of samples obtained for each hour</span>
+<span class="sd">        msoas : np.ndarray</span>
+<span class="sd">            Contains the MSOA codes used to obtain the samples</span>
+
+<span class="sd">        File structure</span>
+<span class="sd">        --------------</span>
+<span class="sd">        Variables</span>
+<span class="sd">            data (total_nonzero, 3) : A single array containing the stacked row indices, column</span>
+<span class="sd">                                      indices and non-zero values from the scipy.sparse coo matrix</span>
+<span class="sd">                                      representation of each sample</span>
+<span class="sd">            index_lookup (n_hours, n_realizations, 2) : A lookup table to find the rows of &#39;data&#39;</span>
+<span class="sd">                                                        that correspond to a specific hour and</span>
+<span class="sd">                                                        realization. The entry at index [i, j, :]</span>
+<span class="sd">                                                        contains the start and end row for the ith</span>
+<span class="sd">                                                        hour and jth realization.</span>
+<span class="sd">            msoas (n_msoas, 9) : An array containing the codes of the MSOAs for which the sample</span>
+<span class="sd">                                 was generated. Each MSOA code contains 9 characters</span>
+<span class="sd">        Metadata</span>
+<span class="sd">            n_realizations : The number of realizations that were obtained for each hour</span>
+
+<span class="sd">            hour_to_index_mapping : A dictionary that provides a mapping between the hour value and</span>
+<span class="sd">                                    its index in &#39;hours&#39;. E.g. if hours = [0, 6, 12], the dictionary</span>
+<span class="sd">                                    is {&#39;hr0&#39;:0, &#39;hr6&#39;:1, &#39;hr12:2&#39;}</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">end_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">])</span>
+        <span class="n">start_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">end_index</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">total_nonzero</span> <span class="o">=</span> <span class="n">end_index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">start_index</span><span class="p">,</span> <span class="n">end_index</span><span class="p">)))</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">hours</span><span class="p">),</span> <span class="n">n_realizations</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="n">journeys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">row</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">journeys</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;NETCDF4&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
+            <span class="c1"># specify the mapping between the hour and the row index of index_lookup</span>
+            <span class="n">hour_to_index</span> <span class="o">=</span> <span class="p">{</span><span class="sa">f</span><span class="s1">&#39;hr</span><span class="si">{</span><span class="n">hour</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">hours</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">hour</span><span class="p">)</span> <span class="k">for</span> <span class="n">hour</span> <span class="ow">in</span> <span class="n">hours</span><span class="p">}</span>
+            <span class="n">write_file</span><span class="o">.</span><span class="n">hour_to_index_mapping</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">hour_to_index</span><span class="p">)</span>
+
+            <span class="c1"># add the number of realizations to the metadata</span>
+            <span class="n">write_file</span><span class="o">.</span><span class="n">n_realizations</span> <span class="o">=</span> <span class="n">n_realizations</span>
+
+            <span class="c1"># turn off filling</span>
+            <span class="n">write_file</span><span class="o">.</span><span class="n">set_fill_off</span><span class="p">()</span>
+
+            <span class="c1"># set the dimensions of variables</span>
+            <span class="n">dim_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n_hours&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">hours</span><span class="p">),</span>
+                        <span class="s1">&#39;n_realizations&#39;</span><span class="p">:</span> <span class="n">n_realizations</span><span class="p">,</span>
+                        <span class="s1">&#39;n_nonzero&#39;</span><span class="p">:</span> <span class="n">total_nonzero</span><span class="p">,</span>
+                        <span class="s1">&#39;row_col_data&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                        <span class="s1">&#39;start_end&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                        <span class="s1">&#39;n_msoas&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">msoas</span><span class="p">),</span>
+                        <span class="s1">&#39;n_chars&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">}</span>
+
+            <span class="k">for</span> <span class="n">dim_name</span><span class="p">,</span> <span class="n">dim_size</span> <span class="ow">in</span> <span class="n">dim_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">write_file</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="n">dim_name</span><span class="p">,</span> <span class="n">dim_size</span><span class="p">)</span>
+
+            <span class="n">lookup_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span>
+            <span class="k">if</span> <span class="n">total_nonzero</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">:</span>
+                <span class="n">lookup_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span>
+            <span class="n">index_lookup</span> <span class="o">=</span> <span class="n">write_file</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;index_lookup&#39;</span><span class="p">,</span> <span class="n">lookup_dtype</span><span class="p">,</span>
+                                                     <span class="p">(</span><span class="s1">&#39;n_hours&#39;</span><span class="p">,</span> <span class="s1">&#39;n_realizations&#39;</span><span class="p">,</span> <span class="s1">&#39;start_end&#39;</span><span class="p">),</span>
+                                                     <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span> <span class="n">complevel</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">index_lookup</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">indices</span>
+
+            <span class="c1"># define a variable for the data</span>
+            <span class="n">sample_data</span> <span class="o">=</span> <span class="n">write_file</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;n_nonzero&#39;</span><span class="p">,</span> <span class="s1">&#39;row_col_data&#39;</span><span class="p">),</span>
+                                                    <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span> <span class="n">complevel</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">sample_data</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+
+            <span class="c1"># define a variable for the msoas</span>
+            <span class="n">sample_msoas</span> <span class="o">=</span> <span class="n">write_file</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;msoas&#39;</span><span class="p">,</span> <span class="s1">&#39;S1&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;n_msoas&#39;</span><span class="p">,</span> <span class="s1">&#39;n_chars&#39;</span><span class="p">))</span>
+            <span class="c1"># accessing protected member enables automatic conversion of strings</span>
+            <span class="n">sample_msoas</span><span class="o">.</span><span class="n">_Encoding</span> <span class="o">=</span> <span class="s1">&#39;ascii&#39;</span>
+            <span class="n">sample_msoas</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">msoas</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;S&#39;</span><span class="p">)</span></div>
+
+
+
+
+<div class="viewcode-block" id="ODLoader">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODLoader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ODLoader</span><span class="p">(</span><span class="n">OriginDestination</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Class for loading existing samples from a netCDF4 file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file : string or pathlib.Path</span>
+<span class="sd">        The full file path of the netCDF4 file containing the existing samples.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file : pathlib.Path</span>
+<span class="sd">        The full file path of the netCDF4 file containing the existing samples.</span>
+<span class="sd">    hour_to_index : dict</span>
+<span class="sd">        A mapping between hour and the index of the start and end indices</span>
+<span class="sd">        required to extract the correct journey numbers.</span>
+<span class="sd">    hours : list</span>
+<span class="sd">        The hours for which samples are available.</span>
+<span class="sd">    n_realizations : int</span>
+<span class="sd">        The number of realizations available for each hour.</span>
+<span class="sd">    msoas : np.ndarray</span>
+<span class="sd">        The MSOAs used to generate the samples</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        file : string or pathlib.Path</span>
+<span class="sd">            The netCDF4 file containing the existing samples.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If file is not a string of pathlib.Path</span>
+<span class="sd">        FileNotFoundError</span>
+<span class="sd">            If the file does not exist.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the file provided is not a netCDF file (does not have .nc extension)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The file path should either be a str or pathlib.Path&#39;</span><span class="p">)</span>
+
+        <span class="c1"># check that the file exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No such file: </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">!=</span> <span class="s1">&#39;.nc&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The file should be a netCDF file&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">file</span>
+
+        <span class="c1"># get the available hours and number of realizations</span>
+        <span class="k">with</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;NETCDF4&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hour_to_index</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">read_file</span><span class="o">.</span><span class="n">hour_to_index_mapping</span><span class="p">)</span>
+            <span class="n">available_hours</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;hr&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hour_to_index</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hours</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">available_hours</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_realizations</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">read_file</span><span class="o">.</span><span class="n">n_realizations</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">msoas</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">[</span><span class="s1">&#39;msoas&#39;</span><span class="p">][:]</span>
+
+        <span class="nb">print</span><span class="p">((</span><span class="sa">f</span><span class="s1">&#39;Available hours: </span><span class="si">{</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">available_hours</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+              <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Number of realizations: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_realizations</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="ODLoader.load_sample">
+<a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODLoader.load_sample">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">realization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">as_pandas</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wide</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Loads a single sample for a specific hour.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        hour : int</span>
+<span class="sd">            The hour for which to load the sample, must be between 0 and 23.</span>
+<span class="sd">        realization : int, optional</span>
+<span class="sd">            The sample number, must be greater than or equal to 0. If None, a realization is selected at random.</span>
+<span class="sd">        as_pandas : boolean, optional</span>
+<span class="sd">            Whether to return the sample as a pandas DataFrame with the row/column indices replaced</span>
+<span class="sd">            with the corresponding start/end MSOA codes. Default is True.</span>
+<span class="sd">        wide : boolean, optional</span>
+<span class="sd">            Whether to return the pandas DataFrame in wide format. Default is False.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If the hour or realization number is not an integer.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the hour or realization number is not available in the given file.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        samples : pd.DataFrame or np.ndarray.</span>
+<span class="sd">            If as_pandas is True, returns the default dataframe containing 3 columns for the start MSOA, end MSOA </span>
+<span class="sd">            and number of journeys. If wide is also True, returns the same dataframe in wide format. If as_pandas </span>
+<span class="sd">            is False, returns an array with 3 columns - the first 2 contain the indices of the start and end MSOAs </span>
+<span class="sd">            and the final column contains the number of journeys between them.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># checks on inputs</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hour</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The hour must be an integer&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">hour</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hours</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Choose from the available hours: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hours</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">realization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># it should be an integer and less than n_realizations</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">realization</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The realization must be an integer&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">realization</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_realizations</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The realization must be between 0 and </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_realizations</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># randomly choose a realization</span>
+            <span class="n">realization</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_realizations</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;NETCDF4&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+            <span class="n">hour_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hour_to_index</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;hr</span><span class="si">{</span><span class="n">hour</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+            <span class="n">start_index</span><span class="p">,</span> <span class="n">end_index</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">[</span><span class="s1">&#39;index_lookup&#39;</span><span class="p">][</span><span class="n">hour_index</span><span class="p">,</span> <span class="n">realization</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">sample</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="n">start_index</span><span class="p">:</span><span class="n">end_index</span><span class="p">,:]</span><span class="o">.</span><span class="n">data</span>
+
+        <span class="k">if</span> <span class="n">as_pandas</span><span class="p">:</span>
+            <span class="c1"># convert to a pandas dataframe with the row and column index replaced by the code of</span>
+            <span class="c1"># the start and end MSOA</span>
+            <span class="n">sample_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;start_msoa&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">msoas</span><span class="p">[</span><span class="n">sample</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]],</span>
+                                      <span class="s1">&#39;end_msoa&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">msoas</span><span class="p">[</span><span class="n">sample</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]],</span>
+                                      <span class="s1">&#39;journeys&#39;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]})</span>
+            <span class="k">if</span> <span class="n">wide</span><span class="p">:</span>
+                <span class="c1"># convert to wide format using pivot_table</span>
+                <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">sample_df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;end_msoa&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;start_msoa&#39;</span><span class="p">,</span>
+                                      <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">sample_df</span>
+
+        <span class="k">return</span> <span class="n">sample</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By UK Health Security Agency
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  &copy Crown Copyright 2025
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

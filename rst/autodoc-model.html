@@ -1,0 +1,865 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>model &#8212; GeMMM</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'rst/autodoc-model';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Bibliography" href="../md/bib.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../md/welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/gemmm_logo_light.png" class="logo__image only-light" alt="GeMMM - Home"/>
+    <script>document.write(`<img src="../_static/gemmm_logo_dark.png" class="logo__image only-dark" alt="GeMMM - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../md/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/data.html">Telecoms data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/fourier.html">Fourier series model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/radiation.html">Radiation model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/performance.html">Model performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/example.html">Using GeMMM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../md/bib.html">Bibliography</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code documentation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">model</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/rst/autodoc-model.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader"><code class="docutils literal notranslate"><span class="pre">ODLoader</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.file"><code class="docutils literal notranslate"><span class="pre">ODLoader.file</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.hour_to_index"><code class="docutils literal notranslate"><span class="pre">ODLoader.hour_to_index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.hours"><code class="docutils literal notranslate"><span class="pre">ODLoader.hours</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.n_realizations"><code class="docutils literal notranslate"><span class="pre">ODLoader.n_realizations</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.msoas"><code class="docutils literal notranslate"><span class="pre">ODLoader.msoas</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.load_sample"><code class="docutils literal notranslate"><span class="pre">ODLoader.load_sample()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler"><code class="docutils literal notranslate"><span class="pre">ODSampler</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.msoas"><code class="docutils literal notranslate"><span class="pre">ODSampler.msoas</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.day_type"><code class="docutils literal notranslate"><span class="pre">ODSampler.day_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.fourier_data"><code class="docutils literal notranslate"><span class="pre">ODSampler.fourier_data</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.radiation_data"><code class="docutils literal notranslate"><span class="pre">ODSampler.radiation_data</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.samples"><code class="docutils literal notranslate"><span class="pre">ODSampler.samples</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.check_sample_inputs"><code class="docutils literal notranslate"><span class="pre">ODSampler.check_sample_inputs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.fourier_sample"><code class="docutils literal notranslate"><span class="pre">ODSampler.fourier_sample()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.generate_sample"><code class="docutils literal notranslate"><span class="pre">ODSampler.generate_sample()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.radiation_sample"><code class="docutils literal notranslate"><span class="pre">ODSampler.radiation_sample()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.sparse_nbinom_sample"><code class="docutils literal notranslate"><span class="pre">ODSampler.sparse_nbinom_sample()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.sparse_poisson_sample"><code class="docutils literal notranslate"><span class="pre">ODSampler.sparse_poisson_sample()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.to_pandas"><code class="docutils literal notranslate"><span class="pre">ODSampler.to_pandas()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.OriginDestination"><code class="docutils literal notranslate"><span class="pre">OriginDestination</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-gemmm.model">
+<span id="model"></span><h1>model<a class="headerlink" href="#module-gemmm.model" title="Link to this heading">#</a></h1>
+<p>Generate sampled flows between pairs of MSOAs or load samples from an existing file.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="gemmm.model.ODLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gemmm.model.</span></span><span class="sig-name descname"><span class="pre">ODLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msoas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODLoader" title="Link to this definition">#</a></dt>
+<dd><p>Class for loading existing samples from a netCDF4 file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>string</em><em> or </em><em>pathlib.Path</em>) – The full file path of the netCDF4 file containing the existing samples.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gemmm.model.ODLoader.file">
+<span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#gemmm.model.ODLoader.file" title="Link to this definition">#</a></dt>
+<dd><p>The full file path of the netCDF4 file containing the existing samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pathlib.Path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gemmm.model.ODLoader.hour_to_index">
+<span class="sig-name descname"><span class="pre">hour_to_index</span></span><a class="headerlink" href="#gemmm.model.ODLoader.hour_to_index" title="Link to this definition">#</a></dt>
+<dd><p>A mapping between hour and the index of the start and end indices
+required to extract the correct journey numbers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gemmm.model.ODLoader.hours">
+<span class="sig-name descname"><span class="pre">hours</span></span><a class="headerlink" href="#gemmm.model.ODLoader.hours" title="Link to this definition">#</a></dt>
+<dd><p>The hours for which samples are available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gemmm.model.ODLoader.n_realizations">
+<span class="sig-name descname"><span class="pre">n_realizations</span></span><a class="headerlink" href="#gemmm.model.ODLoader.n_realizations" title="Link to this definition">#</a></dt>
+<dd><p>The number of realizations available for each hour.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gemmm.model.ODLoader.msoas">
+<span class="sig-name descname"><span class="pre">msoas</span></span><a class="headerlink" href="#gemmm.model.ODLoader.msoas" title="Link to this definition">#</a></dt>
+<dd><p>The MSOAs used to generate the samples</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gemmm.model.ODLoader.load_sample">
+<span class="sig-name descname"><span class="pre">load_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_pandas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wide</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODLoader.load_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODLoader.load_sample" title="Link to this definition">#</a></dt>
+<dd><p>Loads a single sample for a specific hour.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hour</strong> (<em>int</em>) – The hour for which to load the sample, must be between 0 and 23.</p></li>
+<li><p><strong>realization</strong> (<em>int</em><em>, </em><em>optional</em>) – The sample number, must be greater than or equal to 0. If None, a realization is selected at random.</p></li>
+<li><p><strong>as_pandas</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether to return the sample as a pandas DataFrame with the row/column indices replaced
+with the corresponding start/end MSOA codes. Default is True.</p></li>
+<li><p><strong>wide</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether to return the pandas DataFrame in wide format. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If the hour or realization number is not an integer.</p></li>
+<li><p><strong>ValueError</strong> – If the hour or realization number is not available in the given file.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>samples</strong> – If as_pandas is True, returns the default dataframe containing 3 columns for the start MSOA, end MSOA
+and number of journeys. If wide is also True, returns the same dataframe in wide format. If as_pandas
+is False, returns an array with 3 columns - the first 2 contain the indices of the start and end MSOAs
+and the final column contains the number of journeys between them.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame or np.ndarray.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gemmm.model.</span></span><span class="sig-name descname"><span class="pre">ODSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msoas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODSampler" title="Link to this definition">#</a></dt>
+<dd><p>Class for generating flows between pairs of MSOAs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msoas</strong> (<em>list</em><em> or </em><em>np.ndarray</em>) – MSOAs to generate flows between.</p></li>
+<li><p><strong>day_type</strong> (<em>string</em>) – The day type samples are being generated for, either ‘weekday’ or ‘weekend’.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.msoas">
+<span class="sig-name descname"><span class="pre">msoas</span></span><a class="headerlink" href="#gemmm.model.ODSampler.msoas" title="Link to this definition">#</a></dt>
+<dd><p>MSOAs to generate flows between.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.day_type">
+<span class="sig-name descname"><span class="pre">day_type</span></span><a class="headerlink" href="#gemmm.model.ODSampler.day_type" title="Link to this definition">#</a></dt>
+<dd><p>Either ‘weekday’ or ‘weekend’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.fourier_data">
+<span class="sig-name descname"><span class="pre">fourier_data</span></span><a class="headerlink" href="#gemmm.model.ODSampler.fourier_data" title="Link to this definition">#</a></dt>
+<dd><p>Hourly means and overdispersion parameters for the Fourier series model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FourierData</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.radiation_data">
+<span class="sig-name descname"><span class="pre">radiation_data</span></span><a class="headerlink" href="#gemmm.model.ODSampler.radiation_data" title="Link to this definition">#</a></dt>
+<dd><p>Means and hourly scale factors for the radiation model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RadiationData</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.samples">
+<span class="sig-name descname"><span class="pre">samples</span></span><a class="headerlink" href="#gemmm.model.ODSampler.samples" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary containing the generated samples. The keys are tuples of (hour, realization)
+and the values are scipy.sparse COO matrices containing the sampled values. None, until
+the generate_sample method has been called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None or dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.check_sample_inputs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_sample_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hours</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_realizations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODSampler.check_sample_inputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODSampler.check_sample_inputs" title="Link to this definition">#</a></dt>
+<dd><p>Check that the arguments of the sampling methods are appropriate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hours</strong> (<em>int</em><em> or </em><em>list</em><em> of </em><em>int</em>) – The hours for which to obtain samples.</p></li>
+<li><p><strong>n_realizations</strong> (<em>int</em><em>, </em><em>&gt; 0</em>) – The number of realizations to generate for each hour.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If the hours or number of realizations are not integers.</p></li>
+<li><p><strong>ValueError</strong> – If the hours are not between 0 and 23, or the number of realizations is not positive.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>hours</strong> (<em>list of int</em>) – The hours in a list.</p></li>
+<li><p><strong>n_realizations</strong> (<em>int</em>) – The number of realizations.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.fourier_sample">
+<span class="sig-name descname"><span class="pre">fourier_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hours</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_realizations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_inputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODSampler.fourier_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODSampler.fourier_sample" title="Link to this definition">#</a></dt>
+<dd><p>Generate realizations using the Fourier series model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hours</strong> (<em>int</em><em> or </em><em>list</em><em> of </em><em>int</em>) – The hours for which to generate samples.</p></li>
+<li><p><strong>n_realizations</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of realizations to generate for each hour. Default is 1.</p></li>
+<li><p><strong>check_inputs</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether to check the hours and n_realizations arguments before performing the sampling.
+Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sample</strong> – A list of scipy.sparse COO matrices containing the sampled values from the Fourier
+series model. The first n_realization matrices correspond to the first hour of hours,
+the next n_realization matrices correspond to the second hour etc.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.generate_sample">
+<span class="sig-name descname"><span class="pre">generate_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hours</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_realizations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODSampler.generate_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODSampler.generate_sample" title="Link to this definition">#</a></dt>
+<dd><p>Generate realizations using the combined Fourier series and radiation model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hours</strong> (<em>int</em><em> or </em><em>list</em><em> of </em><em>int</em>) – The hours for which to generate samples.</p></li>
+<li><p><strong>n_realizations</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of realizations to generate for each hour. Default is 1.</p></li>
+<li><p><strong>client</strong> (<em>dask.distributed Client</em><em>, </em><em>optional</em>) – Used to perform the radiation model sampling in parallel.</p></li>
+<li><p><strong>save_sample</strong> (<em>boolean</em><em> or </em><em>string/pathlib.Path</em><em>, </em><em>optional</em>) – If False, samples are not saved.
+If True, samples are saved in the current working directory.
+If a string/pathlib.Path is provided, samples are saved to that directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If save_sample is not a boolean or a suitable path.</p></li>
+<li><p><strong>FileNotFoundError</strong> – If the directory specified by save_sample does not exist.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>save_path</strong> – Returns the file path if save_sample is True, otherwise returns None.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pathlib.Path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.radiation_sample">
+<span class="sig-name descname"><span class="pre">radiation_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hours</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_realizations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_inputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODSampler.radiation_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODSampler.radiation_sample" title="Link to this definition">#</a></dt>
+<dd><p>Generate realizations using the radiation model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hours</strong> (<em>int</em><em> or </em><em>list</em><em> of </em><em>int</em>) – The hours for which to generate samples.</p></li>
+<li><p><strong>n_realizations</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of realizations to generate for each hour. Default is 1.</p></li>
+<li><p><strong>client</strong> (<em>dask.distributed Client</em><em>, </em><em>optional</em>) – Used to perform the radiation model sampling in parallel.</p></li>
+<li><p><strong>check_inputs</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether to check the hours and n_realizations arguments before performing the sampling.
+Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sample</strong> – A list of scipy.sparse COO matrices containing the sampled values from the radiation
+model. The first n_realization matrices correspond to the first hour of hours,
+the next n_realization matrices correspond to the second hour etc.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.sparse_nbinom_sample">
+<span class="sig-name descname"><span class="pre">sparse_nbinom_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODSampler.sparse_nbinom_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODSampler.sparse_nbinom_sample" title="Link to this definition">#</a></dt>
+<dd><p>Sample from a negative-binomial distribution using the Fourier series mean (mean) and
+overdispersion parameter (k) for a given hour. The variance of the negative-binomial
+distribution is equal to mean + k*mean^2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hour</strong> (<em>int</em>) – The hour for which to generate samples.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sparse_samples</strong> – The negative-binomial sampled values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>scipy.sparse matrix in COOrdinate format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.sparse_poisson_sample">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sparse_poisson_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unscaled_mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODSampler.sparse_poisson_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODSampler.sparse_poisson_sample" title="Link to this definition">#</a></dt>
+<dd><p>Sample from a Poisson distribution with mean given by theta * unscaled_mean.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unscaled_mean</strong> (<em>np.ndarray</em>) – The unscaled means of the Poisson distribution.</p></li>
+<li><p><strong>theta</strong> (<em>numeric</em>) – Scale factor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sparse_samples</strong> – The Poisson sampled values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>scipy.sparse matrix in COOrdinate format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gemmm.model.ODSampler.to_pandas">
+<span class="sig-name descname"><span class="pre">to_pandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realization</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wide</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODSampler.to_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODSampler.to_pandas" title="Link to this definition">#</a></dt>
+<dd><p>Convert a sample from a sparse matrix to a pandas DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hour</strong> (<em>int</em>) – The hour of the sample to convert.</p></li>
+<li><p><strong>realization</strong> (<em>int</em>) – The realization of the sample to convert.</p></li>
+<li><p><strong>wide</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether to return the pandas DataFrame in wide format. Default is False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If the hour or realization are not integers.</p></li>
+<li><p><strong>KeyError</strong> – If (hour, realization) is not a key in the dictionary of samples.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>samples</strong> – If wide is False, the dataframe contains 3 columns for the start MSOA, end MSOA and number
+of journeys. If wide is True, the same dataframe is returned, but in wide format.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gemmm.model.OriginDestination">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gemmm.model.</span></span><span class="sig-name descname"><span class="pre">OriginDestination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msoas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#OriginDestination"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.OriginDestination" title="Link to this definition">#</a></dt>
+<dd><p>Class for either generating or loading samples depending on the arguments provided.
+Sampling is performed if msoas and day_type are provided, otherwise a file containing
+existing samples must be provided.</p>
+</dd></dl>
+
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./rst"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../md/bib.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Bibliography</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader"><code class="docutils literal notranslate"><span class="pre">ODLoader</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.file"><code class="docutils literal notranslate"><span class="pre">ODLoader.file</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.hour_to_index"><code class="docutils literal notranslate"><span class="pre">ODLoader.hour_to_index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.hours"><code class="docutils literal notranslate"><span class="pre">ODLoader.hours</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.n_realizations"><code class="docutils literal notranslate"><span class="pre">ODLoader.n_realizations</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.msoas"><code class="docutils literal notranslate"><span class="pre">ODLoader.msoas</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODLoader.load_sample"><code class="docutils literal notranslate"><span class="pre">ODLoader.load_sample()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler"><code class="docutils literal notranslate"><span class="pre">ODSampler</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.msoas"><code class="docutils literal notranslate"><span class="pre">ODSampler.msoas</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.day_type"><code class="docutils literal notranslate"><span class="pre">ODSampler.day_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.fourier_data"><code class="docutils literal notranslate"><span class="pre">ODSampler.fourier_data</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.radiation_data"><code class="docutils literal notranslate"><span class="pre">ODSampler.radiation_data</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.samples"><code class="docutils literal notranslate"><span class="pre">ODSampler.samples</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.check_sample_inputs"><code class="docutils literal notranslate"><span class="pre">ODSampler.check_sample_inputs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.fourier_sample"><code class="docutils literal notranslate"><span class="pre">ODSampler.fourier_sample()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.generate_sample"><code class="docutils literal notranslate"><span class="pre">ODSampler.generate_sample()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.radiation_sample"><code class="docutils literal notranslate"><span class="pre">ODSampler.radiation_sample()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.sparse_nbinom_sample"><code class="docutils literal notranslate"><span class="pre">ODSampler.sparse_nbinom_sample()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.sparse_poisson_sample"><code class="docutils literal notranslate"><span class="pre">ODSampler.sparse_poisson_sample()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.ODSampler.to_pandas"><code class="docutils literal notranslate"><span class="pre">ODSampler.to_pandas()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemmm.model.OriginDestination"><code class="docutils literal notranslate"><span class="pre">OriginDestination</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By UK Health Security Agency
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  &copy Crown Copyright 2025
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Fourier series model &#8212; GeMMM</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'md/fourier';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Radiation model" href="radiation.html" />
+    <link rel="prev" title="Telecoms data" href="data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/gemmm_logo_light.png" class="logo__image only-light" alt="GeMMM - Home"/>
+    <script>document.write(`<img src="../_static/gemmm_logo_dark.png" class="logo__image only-dark" alt="GeMMM - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Telecoms data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Fourier series model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="radiation.html">Radiation model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Model performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/example.html">Using GeMMM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="bib.html">Bibliography</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../rst/autodoc-model.html">model</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/md/fourier.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Fourier series model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="fourier-series-model">
+<h1>Fourier series model<a class="headerlink" href="#fourier-series-model" title="Link to this heading">#</a></h1>
+<p>In the mobile telecoms data, the number of hourly journeys varies hugely depending on the start and end MSOA. For rural MSOAs, where only a handful of journeys occur between them each month, a Fourier series model is not appropriate and a radiation model is adopted instead. The Fourier series model is therefore only applied when the time series of journey numbers exhibits a strong daily pattern. In this section we outline what constitutes a strong daily pattern, how the frequencies, amplitude and phases of the Fourier series are selected, and how variability in journey numbers across consecutive weeks is used to construct a probabilistic model.</p>
+<p><font size='4'> <strong>When to use a Fourier series model</strong> </font> <br>
+To determine whether a Fourier series model is appropriate for a specific pairs of MSOAs, recall that the Fourier transform can be used to decompose a time series into its constituent frequencies. The amplitude associated with each frequency specifies how much it contributes to the overall signal, with larger amplitudes indicating that the frequency has a stronger presence. Here, the idea is to define a threshold and only model pairs of MSOAs using a Fourier series if the amplitude of the daily frequency exceeds this threshold. To choose the threshold for a given pair, we repeatedly shuffle the time series of journey numbers, each time evaluating the Fourier transform and recording the largest amplitude. The threshold is then set as the 99<sup>th</sup> percentile of these amplitudes and represents the largest amplitude we can reasonably expect to see from a series with the same first-order statistics but without the periodicity<span id="id1"><sup><a class="reference internal" href="bib.html#id7" title="Michail Vlachos, Philip Yu, and Vittorio Castelli. On periodicity detection and structural periodic similarity. In Proceedings of the 2005 SIAM international conference on data mining. 2005. doi:10.1137/1.9781611972757.40.">6</a></sup></span>. When applying this technique across all pairs, only 1.5% have a strong enough daily pattern to be modelled as a Fourier series, but these pairs account for 89% of total journey numbers.</p>
+<p>The following plot shows the time series of journey numbers for two different MSOA pairs along with the corresponding periodograms. The threshold (red) and amplitude of the daily frequency (blue) are highlighted in each case.</p>
+<a class="reference internal image-reference" href="../_images/fourier_threshold.png"><img alt="" class="align-center" src="../_images/fourier_threshold.png" style="width: 100%;" />
+</a>
+<br>
+<p><font size='4'> <strong>Choosing the number of terms</strong> </font> <br>
+Once a Fourier series model has been deemed appropriate for a particular pair of MSOAs, the next step is to determine the number of terms to include. If <span class="math notranslate nohighlight">\(A_k\)</span> and <span class="math notranslate nohighlight">\(\phi_k\)</span> denote the respective amplitude and phase of frequency <span class="math notranslate nohighlight">\(f_k\)</span>, then the original time series of journey numbers can be reconstructed as the Fourier series:</p>
+<div class="math notranslate nohighlight">
+\[
+f(t) = A_0 + \sum_{k=1}^{M} A_k \cos\left(2\pi f_k t + \phi_k\right) \, ,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(A_0\)</span> is the DC term, or the mean of the series<span id="id2"><sup><a class="reference internal" href="bib.html#id8" title="Jörn PW Scharlemann, David Benz, Simon I Hay, Bethan V Purse, Andrew J Tatem, GR William Wint, and David J Rogers. Global data for ecology and epidemiology: a novel algorithm for temporal fourier processing modis data. PloS One, 2008. doi:10.1371/journal.pone.0001408.">7</a></sup></span>. Including all of the frequencies in the above sum reconstructs the time series exactly but results in a model that overfits to the noise in the series. On the other hand, including too few frequencies produces a model that might fail to capture key features present in the data. To choose an appropriate number of terms, a 5-fold cross-validation procedure is implemented. The time series for each MSOA pair is first partitioned into 5 validation folds, each containing a unique set of weeks. For each fold, the Fourier transform is then applied to the median hourly counts of the remaining weeks, and the frequencies are ranked by importance. A consensus ranking is generated by aggregating the rankings across all folds. Predictions are then made using an increasing number of terms, and the root mean square error (RMSE) is computed between the predictions and the corresponding validation folds. Finally, the optimal number of terms is selected by minimising the average RMSE across all folds.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By using the median hourly values, the frequencies are restricted to daily harmonics, that is, frequencies that complete an integer number of cycles each day. This not only limits the maximum number of parameters, since each frequency has a corresponding amplitude and phase, but also avoids low frequencies. At lower frequencies, cycles span multiple weeks and align more closely with seasonal trends, which are difficult to reliably identify from the three-month period we have data for.</p>
+</div>
+<p>A comparison between the Fourier series approximation and original time series is provided below for a single MSOA pair.</p>
+<a class="reference internal image-reference" href="../_images/fourier_series.png"><img alt="" class="align-center" src="../_images/fourier_series.png" style="width: 100%;" />
+</a>
+<p><font size='4'> <strong>Probabilistic model</strong> </font> <br>
+Whilst the Fourier series can be thought of as an estimate of the average number of hourly journeys, an understanding of the variability across weeks is also needed in order to sample realizations. For most pairs modelled by a Fourier series, the standard deviation across the three-month period can be approximated in terms of the mean, <span class="math notranslate nohighlight">\(\mu_h\)</span>, using</p>
+<div class="math notranslate nohighlight" id="equation-sigma-h">
+<span class="eqno">(1)<a class="headerlink" href="#equation-sigma-h" title="Link to this equation">#</a></span>\[\hat{\sigma}_{h}=\sqrt{k_h\mu_{h}^2 + \mu_{h}} \, ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_h\)</span> is estimated by minimising the squared error between this expression and the observed standard deviation. This particular relationship holds for random variables that follow a negative-binomial distribution, with <span class="math notranslate nohighlight">\(k_h\)</span> referred to as the dispersion parameter. As a result, if <span class="math notranslate nohighlight">\(f(h)\)</span> is the Fourier series prediction for hour <span class="math notranslate nohighlight">\(h\)</span>, realizations of journey numbers can be obtained by sampling from a negative-binomial distribution with mean <span class="math notranslate nohighlight">\(f(h)\)</span> and variance <span class="math notranslate nohighlight">\(k_h f(h)^2 + f(h)\)</span>. For the majority of pairs, no autocorrelation is present in the residuals of the Fourier series model at a 1% significance level, indicating that it is suitable to sample from independent negative-binomial distributions for each hour.</p>
+<p>The following plots shows the observed mean and standard deviation at two hours for pairs modelled by a Fourier series. The solid red line corresponds to the fitted curve from <a class="reference internal" href="#equation-sigma-h">(1)</a>, whilst the dashed red line represents the special case where <span class="math notranslate nohighlight">\(k_h=0\)</span> and the negative-binomial distribution reduces to a Poisson distribution.</p>
+<a class="reference internal image-reference" href="images/fourier_noise.png"><img alt="" class="align-center" src="images/fourier_noise.png" style="width: 90%;" />
+</a>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./md"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Telecoms data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="radiation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Radiation model</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By UK Health Security Agency
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  &copy Crown Copyright 2025
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
