@@ -47,7 +47,7 @@ where $k_h$ is estimated by minimising the squared error between this expression
 
 The following plots shows the observed mean and standard deviation at two hours for pairs modelled by a Fourier series. The solid red line corresponds to the fitted curve from {eq}`sigma_h`, whilst the dashed red line represents the special case where $k_h=0$ and the negative-binomial distribution reduces to a Poisson distribution.
 
-```{image} ../images/fourier_noise.png
+```{image} ../images/fourier_noise_lower.png
 :alt: 
 :width: 90%
 :align: center
