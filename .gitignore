@@ -6,6 +6,7 @@ build/*
 __pycache__
 *.egg-info
 *.egg
+**/_build/
 
 # notebooks
 admin_notebooks

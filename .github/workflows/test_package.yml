@@ -1,4 +1,4 @@
-name: test Gemmm
+name: test gemmm
 
 on:
   push:
@@ -60,7 +60,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
 
-      - name: Install Gemmm
+      - name: Install gemmm
         run: |
           pip install .
 
