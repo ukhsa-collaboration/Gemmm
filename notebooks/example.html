@@ -465,74 +465,10 @@ Suppose that we are interested in generating journey numbers for MSOAs located w
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading file &#39;fourier_data_weekday.hdf5&#39; from &#39;https://github.com/ukhsa-collaboration/Gemmm/raw/refs/heads/main/model_data/fourier_data_weekday.hdf5&#39; to &#39;/home/runner/.cache/gemmm-model-data&#39;.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading file &#39;fourier_data_weekday.hdf5&#39; from &#39;https://github.com/ukhsa-collaboration/gemmm/raw/refs/heads/main/model_data/fourier_data_weekday.hdf5&#39; to &#39;/home/runner/.cache/gemmm-model-data&#39;.
 </pre></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">HTTPError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span><span class="w"> </span><span class="nn">gemmm</span><span class="w"> </span><span class="kn">import</span> <span class="n">OriginDestination</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">sampler</span> <span class="o">=</span> <span class="n">OriginDestination</span><span class="p">(</span><span class="n">msoas</span><span class="o">=</span><span class="n">msoas</span><span class="p">,</span> <span class="n">day_type</span><span class="o">=</span><span class="s1">&#39;weekday&#39;</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/gemmm/model.py:100,</span> in <span class="ni">ODSampler.__init__</span><span class="nt">(self, msoas, day_type)</span>
-<span class="g g-Whitespace">     </span><span class="mi">97</span> <span class="bp">self</span><span class="o">.</span><span class="n">msoas</span> <span class="o">=</span> <span class="n">msoas</span>
-<span class="g g-Whitespace">     </span><span class="mi">99</span> <span class="c1"># Load the data required to run the Fourier series and radiation models</span>
-<span class="ne">--&gt; </span><span class="mi">100</span> <span class="n">fetcher</span> <span class="o">=</span> <span class="n">FetchData</span><span class="p">(</span><span class="n">msoas</span><span class="p">,</span> <span class="n">day_type</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">101</span> <span class="bp">self</span><span class="o">.</span><span class="n">fourier_data</span> <span class="o">=</span> <span class="n">fetcher</span><span class="o">.</span><span class="n">fetch_fourier</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">102</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiation_data</span> <span class="o">=</span> <span class="n">fetcher</span><span class="o">.</span><span class="n">fetch_radiation</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/gemmm/fetch_data.py:55,</span> in <span class="ni">FetchData.__init__</span><span class="nt">(self, msoas, day_type)</span>
-<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="n">goodboy</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">32</span>     <span class="n">path</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">os_cache</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">),</span>
-<span class="g g-Whitespace">     </span><span class="mi">33</span>     <span class="n">base_url</span> <span class="o">=</span> <span class="n">data_url</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>     <span class="mi">47</span>                 <span class="p">}</span>
-<span class="g g-Whitespace">     </span><span class="mi">48</span>         <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">50</span> <span class="c1">#downloader_auth = pooch.HTTPDownloader(headers={&#39;Authorization&#39;: f&#39;token {github_token}&#39;,</span>
-<span class="g g-Whitespace">     </span><span class="mi">51</span> <span class="c1">#                                                &#39;Accept&#39;: &#39;application/vnd.github.v4.raw&#39;},</span>
-<span class="g g-Whitespace">     </span><span class="mi">52</span> <span class="c1">#                                       progressbar=True)</span>
-<span class="g g-Whitespace">     </span><span class="mi">53</span> <span class="c1">#downloader_auth = pooch.HTTPDownloader(progressbar=True)</span>
-<span class="ne">---&gt; </span><span class="mi">55</span> <span class="bp">self</span><span class="o">.</span><span class="n">fourier_file</span> <span class="o">=</span> <span class="n">goodboy</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;fourier_data_</span><span class="si">{</span><span class="n">day_type</span><span class="si">}</span><span class="s1">.hdf5&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">56</span>                                   <span class="c1">#downloader=downloader_auth)</span>
-<span class="g g-Whitespace">     </span><span class="mi">58</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiation_file</span> <span class="o">=</span> <span class="n">goodboy</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;radiation_data_</span><span class="si">{</span><span class="n">day_type</span><span class="si">}</span><span class="s1">.hdf5&#39;</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/pooch/core.py:589,</span> in <span class="ni">Pooch.fetch</span><span class="nt">(self, fname, processor, downloader, progressbar)</span>
-<span class="g g-Whitespace">    </span><span class="mi">586</span>     <span class="k">if</span> <span class="n">downloader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">587</span>         <span class="n">downloader</span> <span class="o">=</span> <span class="n">choose_downloader</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">progressbar</span><span class="o">=</span><span class="n">progressbar</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">589</span>     <span class="n">stream_download</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">590</span>         <span class="n">url</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">591</span>         <span class="n">full_path</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">592</span>         <span class="n">known_hash</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">593</span>         <span class="n">downloader</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">594</span>         <span class="n">pooch</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">595</span>         <span class="n">retry_if_failed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retry_if_failed</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">596</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">598</span> <span class="k">if</span> <span class="n">processor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">599</span>     <span class="k">return</span> <span class="n">processor</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">full_path</span><span class="p">),</span> <span class="n">action</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/pooch/core.py:807,</span> in <span class="ni">stream_download</span><span class="nt">(url, fname, known_hash, downloader, pooch, retry_if_failed)</span>
-<span class="g g-Whitespace">    </span><span class="mi">803</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">804</span>     <span class="c1"># Stream the file to a temporary so that we can safely check its</span>
-<span class="g g-Whitespace">    </span><span class="mi">805</span>     <span class="c1"># hash before overwriting the original.</span>
-<span class="g g-Whitespace">    </span><span class="mi">806</span>     <span class="k">with</span> <span class="n">temporary_file</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="o">.</span><span class="n">parent</span><span class="p">))</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">807</span>         <span class="n">downloader</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">pooch</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">808</span>         <span class="n">hash_matches</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">known_hash</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-<span class="g g-Whitespace">    </span><span class="mi">809</span>         <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/pooch/downloaders.py:221,</span> in <span class="ni">HTTPDownloader.__call__</span><span class="nt">(self, url, output_file, pooch, check_only)</span>
-<span class="g g-Whitespace">    </span><span class="mi">219</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">221</span>     <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="n">content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">223</span>     <span class="n">total</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content-length&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/requests/models.py:1024,</span> in <span class="ni">Response.raise_for_status</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1019</span>     <span class="n">http_error_msg</span> <span class="o">=</span> <span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1020</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> Server Error: </span><span class="si">{</span><span class="n">reason</span><span class="si">}</span><span class="s2"> for url: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1021</span>     <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1023</span> <span class="k">if</span> <span class="n">http_error_msg</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1024</span>     <span class="k">raise</span> <span class="n">HTTPError</span><span class="p">(</span><span class="n">http_error_msg</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-
-<span class="ne">HTTPError</span>: 429 Client Error: Too Many Requests for url: https://raw.githubusercontent.com/ukhsa-collaboration/Gemmm/refs/heads/main/model_data/fourier_data_weekday.hdf5
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading file &#39;radiation_data_weekday.hdf5&#39; from &#39;https://github.com/ukhsa-collaboration/gemmm/raw/refs/heads/main/model_data/radiation_data_weekday.hdf5&#39; to &#39;/home/runner/.cache/gemmm-model-data&#39;.
 </pre></div>
 </div>
 </div>
@@ -541,16 +477,6 @@ Suppose that we are interested in generating journey numbers for MSOAs located w
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sampler</span><span class="o">.</span><span class="n">generate_sample</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="n">n_realizations</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sampler</span><span class="o">.</span><span class="n">generate_sample</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="n">n_realizations</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;sampler&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -565,15 +491,275 @@ Suppose that we are interested in generating journey numbers for MSOAs located w
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sampler</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">realization</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">wide</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="ne">NameError</span>: name &#39;sampler&#39; is not defined
-</pre></div>
-</div>
-</div>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="13" halign="left">journeys</th>
+    </tr>
+    <tr>
+      <th>end_msoa</th>
+      <th>E02003719</th>
+      <th>E02003720</th>
+      <th>E02003721</th>
+      <th>E02003722</th>
+      <th>E02003723</th>
+      <th>E02003724</th>
+      <th>E02003725</th>
+      <th>E02003726</th>
+      <th>E02003727</th>
+      <th>E02003728</th>
+      <th>E02003729</th>
+      <th>E02003730</th>
+      <th>E02003731</th>
+    </tr>
+    <tr>
+      <th>start_msoa</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>E02003719</th>
+      <td>249.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>9.0</td>
+      <td>49.0</td>
+      <td>8.0</td>
+      <td>6.0</td>
+      <td>22.0</td>
+      <td>7.0</td>
+      <td>36.0</td>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>E02003720</th>
+      <td>6.0</td>
+      <td>305.0</td>
+      <td>8.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>9.0</td>
+      <td>44.0</td>
+      <td>12.0</td>
+      <td>10.0</td>
+      <td>26.0</td>
+      <td>13.0</td>
+      <td>58.0</td>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>E02003721</th>
+      <td>4.0</td>
+      <td>8.0</td>
+      <td>369.0</td>
+      <td>2.0</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>50.0</td>
+      <td>6.0</td>
+      <td>0.0</td>
+      <td>12.0</td>
+      <td>8.0</td>
+      <td>35.0</td>
+      <td>26.0</td>
+    </tr>
+    <tr>
+      <th>E02003722</th>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>4.0</td>
+      <td>395.0</td>
+      <td>3.0</td>
+      <td>1.0</td>
+      <td>15.0</td>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+      <td>16.0</td>
+      <td>17.0</td>
+      <td>12.0</td>
+    </tr>
+    <tr>
+      <th>E02003723</th>
+      <td>2.0</td>
+      <td>9.0</td>
+      <td>7.0</td>
+      <td>2.0</td>
+      <td>425.0</td>
+      <td>4.0</td>
+      <td>29.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>13.0</td>
+      <td>3.0</td>
+      <td>31.0</td>
+      <td>19.0</td>
+    </tr>
+    <tr>
+      <th>E02003724</th>
+      <td>7.0</td>
+      <td>11.0</td>
+      <td>9.0</td>
+      <td>4.0</td>
+      <td>11.0</td>
+      <td>483.0</td>
+      <td>58.0</td>
+      <td>3.0</td>
+      <td>8.0</td>
+      <td>20.0</td>
+      <td>17.0</td>
+      <td>41.0</td>
+      <td>55.0</td>
+    </tr>
+    <tr>
+      <th>E02003725</th>
+      <td>16.0</td>
+      <td>9.0</td>
+      <td>19.0</td>
+      <td>5.0</td>
+      <td>11.0</td>
+      <td>16.0</td>
+      <td>1086.0</td>
+      <td>20.0</td>
+      <td>11.0</td>
+      <td>36.0</td>
+      <td>15.0</td>
+      <td>41.0</td>
+      <td>27.0</td>
+    </tr>
+    <tr>
+      <th>E02003726</th>
+      <td>5.0</td>
+      <td>1.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>5.0</td>
+      <td>16.0</td>
+      <td>345.0</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>6.0</td>
+      <td>15.0</td>
+      <td>14.0</td>
+    </tr>
+    <tr>
+      <th>E02003727</th>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>2.0</td>
+      <td>26.0</td>
+      <td>2.0</td>
+      <td>290.0</td>
+      <td>7.0</td>
+      <td>6.0</td>
+      <td>16.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>E02003728</th>
+      <td>7.0</td>
+      <td>7.0</td>
+      <td>21.0</td>
+      <td>14.0</td>
+      <td>15.0</td>
+      <td>9.0</td>
+      <td>63.0</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>421.0</td>
+      <td>11.0</td>
+      <td>27.0</td>
+      <td>18.0</td>
+    </tr>
+    <tr>
+      <th>E02003729</th>
+      <td>10.0</td>
+      <td>8.0</td>
+      <td>14.0</td>
+      <td>10.0</td>
+      <td>6.0</td>
+      <td>8.0</td>
+      <td>41.0</td>
+      <td>5.0</td>
+      <td>3.0</td>
+      <td>12.0</td>
+      <td>305.0</td>
+      <td>27.0</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>E02003730</th>
+      <td>7.0</td>
+      <td>10.0</td>
+      <td>25.0</td>
+      <td>14.0</td>
+      <td>14.0</td>
+      <td>19.0</td>
+      <td>107.0</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>26.0</td>
+      <td>41.0</td>
+      <td>731.0</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <th>E02003731</th>
+      <td>11.0</td>
+      <td>11.0</td>
+      <td>5.0</td>
+      <td>3.0</td>
+      <td>7.0</td>
+      <td>12.0</td>
+      <td>43.0</td>
+      <td>5.0</td>
+      <td>6.0</td>
+      <td>8.0</td>
+      <td>3.0</td>
+      <td>18.0</td>
+      <td>547.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <br>
 Sometimes it may be useful to know average journey numbers rather than sampled values. These averages can be extracted from the Fourier series and radiation model data for a specific hour.<div class="cell docutils container">
@@ -590,20 +776,6 @@ Sometimes it may be useful to know average journey numbers rather than sampled v
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">hour</span> <span class="o">=</span> <span class="mi">16</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">fourier_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">msoas</span><span class="p">),)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">fourier_mean</span><span class="p">[</span><span class="n">sampler</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">mean</span><span class="p">[</span><span class="n">hour</span><span class="p">]</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">radiation_mean</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">radiation_data</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="n">hour</span><span class="p">]</span> <span class="o">*</span> <span class="n">sampler</span><span class="o">.</span><span class="n">radiation_data</span><span class="o">.</span><span class="n">mean</span>
-
-<span class="ne">NameError</span>: name &#39;sampler&#39; is not defined
-</pre></div>
-</div>
-</div>
 </div>
 <section id="saving-and-loading-samples">
 <h2>Saving and loading samples<a class="headerlink" href="#saving-and-loading-samples" title="Link to this heading">#</a></h2>
@@ -615,12 +787,7 @@ Sometimes it may be useful to know average journey numbers rather than sampled v
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">save_file</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">generate_sample</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="n">n_realizations</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">save_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;sampler&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saving samples to weekday_samples_2025-04-30--07-53-27.nc
 </pre></div>
 </div>
 </div>
@@ -633,12 +800,8 @@ Sometimes it may be useful to know average journey numbers rather than sampled v
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">loader</span> <span class="o">=</span> <span class="n">OriginDestination</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">save_file</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;save_file&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Available hours: 8, 12, 16
+Number of realizations: 5
 </pre></div>
 </div>
 </div>
@@ -651,15 +814,275 @@ Sometimes it may be useful to know average journey numbers rather than sampled v
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_sample</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">realization</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">wide</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="ne">NameError</span>: name &#39;loader&#39; is not defined
-</pre></div>
-</div>
-</div>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="13" halign="left">journeys</th>
+    </tr>
+    <tr>
+      <th>end_msoa</th>
+      <th>E02003719</th>
+      <th>E02003720</th>
+      <th>E02003721</th>
+      <th>E02003722</th>
+      <th>E02003723</th>
+      <th>E02003724</th>
+      <th>E02003725</th>
+      <th>E02003726</th>
+      <th>E02003727</th>
+      <th>E02003728</th>
+      <th>E02003729</th>
+      <th>E02003730</th>
+      <th>E02003731</th>
+    </tr>
+    <tr>
+      <th>start_msoa</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>E02003719</th>
+      <td>222.0</td>
+      <td>7.0</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>12.0</td>
+      <td>28.0</td>
+      <td>5.0</td>
+      <td>4.0</td>
+      <td>10.0</td>
+      <td>14.0</td>
+      <td>18.0</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>E02003720</th>
+      <td>2.0</td>
+      <td>264.0</td>
+      <td>12.0</td>
+      <td>6.0</td>
+      <td>1.0</td>
+      <td>10.0</td>
+      <td>24.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>9.0</td>
+      <td>4.0</td>
+      <td>20.0</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>E02003721</th>
+      <td>6.0</td>
+      <td>8.0</td>
+      <td>292.0</td>
+      <td>7.0</td>
+      <td>5.0</td>
+      <td>13.0</td>
+      <td>30.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>11.0</td>
+      <td>12.0</td>
+      <td>28.0</td>
+      <td>11.0</td>
+    </tr>
+    <tr>
+      <th>E02003722</th>
+      <td>4.0</td>
+      <td>6.0</td>
+      <td>7.0</td>
+      <td>287.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+      <td>13.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>16.0</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>E02003723</th>
+      <td>4.0</td>
+      <td>2.0</td>
+      <td>10.0</td>
+      <td>3.0</td>
+      <td>451.0</td>
+      <td>13.0</td>
+      <td>28.0</td>
+      <td>2.0</td>
+      <td>8.0</td>
+      <td>13.0</td>
+      <td>7.0</td>
+      <td>16.0</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>E02003724</th>
+      <td>11.0</td>
+      <td>14.0</td>
+      <td>14.0</td>
+      <td>5.0</td>
+      <td>1.0</td>
+      <td>351.0</td>
+      <td>40.0</td>
+      <td>10.0</td>
+      <td>9.0</td>
+      <td>12.0</td>
+      <td>13.0</td>
+      <td>39.0</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>E02003725</th>
+      <td>41.0</td>
+      <td>54.0</td>
+      <td>39.0</td>
+      <td>21.0</td>
+      <td>37.0</td>
+      <td>87.0</td>
+      <td>1048.0</td>
+      <td>49.0</td>
+      <td>24.0</td>
+      <td>69.0</td>
+      <td>64.0</td>
+      <td>154.0</td>
+      <td>49.0</td>
+    </tr>
+    <tr>
+      <th>E02003726</th>
+      <td>7.0</td>
+      <td>7.0</td>
+      <td>10.0</td>
+      <td>6.0</td>
+      <td>6.0</td>
+      <td>4.0</td>
+      <td>43.0</td>
+      <td>252.0</td>
+      <td>1.0</td>
+      <td>14.0</td>
+      <td>5.0</td>
+      <td>21.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>E02003727</th>
+      <td>6.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>22.0</td>
+      <td>3.0</td>
+      <td>317.0</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>11.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>E02003728</th>
+      <td>15.0</td>
+      <td>16.0</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>18.0</td>
+      <td>14.0</td>
+      <td>45.0</td>
+      <td>7.0</td>
+      <td>7.0</td>
+      <td>404.0</td>
+      <td>13.0</td>
+      <td>25.0</td>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>E02003729</th>
+      <td>8.0</td>
+      <td>11.0</td>
+      <td>5.0</td>
+      <td>7.0</td>
+      <td>3.0</td>
+      <td>16.0</td>
+      <td>25.0</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>11.0</td>
+      <td>272.0</td>
+      <td>28.0</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>E02003730</th>
+      <td>30.0</td>
+      <td>50.0</td>
+      <td>34.0</td>
+      <td>16.0</td>
+      <td>18.0</td>
+      <td>36.0</td>
+      <td>105.0</td>
+      <td>25.0</td>
+      <td>11.0</td>
+      <td>19.0</td>
+      <td>35.0</td>
+      <td>695.0</td>
+      <td>17.0</td>
+    </tr>
+    <tr>
+      <th>E02003731</th>
+      <td>20.0</td>
+      <td>27.0</td>
+      <td>27.0</td>
+      <td>17.0</td>
+      <td>14.0</td>
+      <td>36.0</td>
+      <td>49.0</td>
+      <td>8.0</td>
+      <td>7.0</td>
+      <td>20.0</td>
+      <td>14.0</td>
+      <td>35.0</td>
+      <td>451.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 </section>

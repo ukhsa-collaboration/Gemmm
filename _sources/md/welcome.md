@@ -1,6 +1,6 @@
 # GeMMM
 
-GeMMM (Generalized Mobile Movement Model) is a Python package that allows users to sample hourly journey numbers across England, Scotland and Wales. By combining probabilistic models with mobile telecoms data, GeMMM accounts for variability in these movement patterns and therefore reduces reliance on static datasets that only provide a snapshot at a single point in time. The {doc}`User Guide <../md/intro>` provides a more detailed description of the underlying models and data, along with caveats that users should be aware of before using this package, and the {doc}`Tutorial <../notebooks/example>` outlines the main functionality of GeMMM. The package source is freely available and hosted on [GitHub](https://github.com/ukhsa-collaboration/Gemmm).
+GeMMM (Generalized Mobile Movement Model) is a Python package that allows users to sample hourly journey numbers across England, Scotland and Wales. By combining probabilistic models with mobile telecoms data, GeMMM accounts for variability in these movement patterns and therefore reduces reliance on static datasets that only provide a snapshot at a single point in time. The {doc}`User Guide <../md/intro>` provides a more detailed description of the underlying models and data, along with caveats that users should be aware of before using this package, and the {doc}`Tutorial <../notebooks/example>` outlines the main functionality of GeMMM. The package source is freely available and hosted on [GitHub](https://github.com/ukhsa-collaboration/gemmm).
 
 ## Installation
 The simplest way to install GeMMM is from PyPI using pip
@@ -10,7 +10,7 @@ pip install gemmm
 
 Alternatively, a copy of the source code can be downloaded from the GitHub repository
 ```
-git clone https://github.com/ukhsa-collaboration/Gemmm.git
+git clone https://github.com/ukhsa-collaboration/gemmm.git
 ```
 and the relevant dependencies, and GeMMM, can be installed
 ```
