@@ -42,7 +42,7 @@ where = ["src"]
 readme = {file = ["README.rst"]}
 
 [project.urls]
-Homepage = "https://github.com/ukhsa-collaboration/Gemmm"
+Homepage = "https://github.com/ukhsa-collaboration/gemmm"
 
 # [tool.setuptools_scm]
 

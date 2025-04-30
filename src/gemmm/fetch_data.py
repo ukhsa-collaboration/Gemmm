@@ -24,8 +24,7 @@ class FetchData():
     '''
 
     def __init__(self, msoas, day_type):
-        #data_url = 'https://api.github.com/repos/ukhsa-collaboration/Gemmm/contents/model_data/'
-        data_url = 'https://github.com/ukhsa-collaboration/Gemmm/raw/refs/heads/main/model_data/'
+        data_url = 'https://github.com/ukhsa-collaboration/gemmm/raw/refs/heads/main/model_data/'
         cache_dir = 'gemmm-model-data'
 
         goodboy = pooch.create(
@@ -47,23 +46,12 @@ class FetchData():
                         }
                 )
 
-        #downloader_auth = pooch.HTTPDownloader(headers={'Authorization': f'token {github_token}',
-        #                                                'Accept': 'application/vnd.github.v4.raw'},
-        #                                       progressbar=True)
         #downloader_auth = pooch.HTTPDownloader(progressbar=True)
-
         self.fourier_file = goodboy.fetch(f'fourier_data_{day_type}.hdf5')
                                           #downloader=downloader_auth)
 
         self.radiation_file = goodboy.fetch(f'radiation_data_{day_type}.hdf5')
                                             #downloader=downloader_auth)
-        '''
-        # for development use only
-        self.fourier_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'
-                             f'fourier_data_{day_type}.hdf5')
-        self.radiation_file = ('C:/Users/Jonathan.Carruthers/Documents/telecoms/Gemmm/model_data/'
-                               f'radiation_data_{day_type}.hdf5')
-        '''
 
         with h5py.File(self.fourier_file, 'r') as fourier_loader:
             # get the MSOA order used to create the fourier series/migration files.

@@ -9,7 +9,7 @@ pip install gemmm
 
 Alternatively, a copy of the source code can be downloaded from the GitHub repository
 ```
-git clone https://github.com/ukhsa-collaboration/Gemmm.git
+git clone https://github.com/ukhsa-collaboration/gemmm.git
 ```
 and the relevant dependencies, and GeMMM, can be installed
 ```
