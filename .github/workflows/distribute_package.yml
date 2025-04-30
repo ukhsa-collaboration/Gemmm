@@ -82,7 +82,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          #name: gemmm-cp311-none-any
+          name: gemmm-cp311-none-any
           path: dist/
 
       # live push to pypi on tagging the main branch
