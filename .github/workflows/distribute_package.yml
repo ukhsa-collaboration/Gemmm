@@ -86,10 +86,10 @@ jobs:
           path: dist/
 
       # live push to pypi on tagging the main branch
-      #- uses: pypa/gh-action-pypi-publish@release/v1
-      #  if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-      #  with:
-      #    repository-url: https://upload.pypi.org/legacy/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        with:
+          repository-url: https://upload.pypi.org/legacy/
 
       # upload to test pypi
       - uses: pypa/gh-action-pypi-publish@release/v1
