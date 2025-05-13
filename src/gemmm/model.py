@@ -341,7 +341,7 @@ class ODSampler(OriginDestination):
         return None
 
 
-    def to_pandas(self, hour, realization, wide=False):
+    def to_pandas(self, hour, realization=None, wide=False):
         '''
         Convert a sample from a sparse matrix to a pandas DataFrame.
 
@@ -349,10 +349,10 @@ class ODSampler(OriginDestination):
         ----------
         hour : int
             The hour of the sample to convert.
-        realization : int
-            The realization of the sample to convert.
+        realization : int, optional
+            The realization of the sample to convert. If None, a realization is selected at random.
         wide : boolean, optional
-            Whether to return the pandas DataFrame in wide format. Default is False
+            Whether to return the pandas DataFrame in wide format. Default is False.
 
         Raises
         ------
@@ -370,10 +370,16 @@ class ODSampler(OriginDestination):
 
         if not isinstance(hour, int):
             raise TypeError('The hour must be an integer')
-        if not isinstance(realization, int):
-            raise TypeError('The realization must be an integer')
 
-        key_hours, key_realizations = zip(*self.samples.keys())
+        key_hours, key_realizations = zip(*self.samples.keys())        
+        if realization is not None:
+            # it should be an integer
+            if not isinstance(realization, int):
+                raise TypeError('The realization must be an integer')
+        else:
+            # randomly choose a realization
+            realization = np.random.randint(low=0, high=len(np.unique(key_realizations)))
+
         sample = self.samples.get((hour, realization))
 
         if sample is None:
@@ -387,7 +393,9 @@ class ODSampler(OriginDestination):
                                   'journeys': sample.data})
         if wide:
             # convert to wide format using pivot_table
-            return pd.pivot_table(sample_df, columns='end_msoa', index='start_msoa', fill_value=0)
+            wide_df = pd.pivot_table(sample_df, columns='end_msoa', index='start_msoa', fill_value=0)
+            wide_df.columns = wide_df.columns.get_level_values(1)
+            return wide_df
 
         return sample_df
 
@@ -623,9 +631,10 @@ class ODLoader(OriginDestination):
                                       'journeys': sample[:,2]})
             if wide:
                 # convert to wide format using pivot_table
-                return pd.pivot_table(sample_df, columns='end_msoa', index='start_msoa',
-                                      fill_value=0)
-
+                wide_df = pd.pivot_table(sample_df, columns='end_msoa', index='start_msoa', fill_value=0)
+                wide_df.columns = wide_df.columns.get_level_values(1)
+                return wide_df
+            
             return sample_df
 
         return sample

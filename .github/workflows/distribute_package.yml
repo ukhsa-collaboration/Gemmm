@@ -91,8 +91,9 @@ jobs:
         with:
           repository-url: https://upload.pypi.org/legacy/
 
-      # upload to test pypi
+      # upload to test pypi (on dev branch commit)
       - uses: pypa/gh-action-pypi-publish@release/v1
+        if: github.ref == 'refs/heads/dev'
         with:
           repository-url: https://test.pypi.org/legacy/
       
