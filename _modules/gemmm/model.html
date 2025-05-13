@@ -660,7 +660,7 @@ document.write(`
 
 <div class="viewcode-block" id="ODSampler.to_pandas">
 <a class="viewcode-back" href="../../rst/autodoc-model.html#gemmm.model.ODSampler.to_pandas">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_pandas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">realization</span><span class="p">,</span> <span class="n">wide</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_pandas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">realization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wide</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Convert a sample from a sparse matrix to a pandas DataFrame.</span>
 
@@ -668,10 +668,10 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        hour : int</span>
 <span class="sd">            The hour of the sample to convert.</span>
-<span class="sd">        realization : int</span>
-<span class="sd">            The realization of the sample to convert.</span>
+<span class="sd">        realization : int, optional</span>
+<span class="sd">            The realization of the sample to convert. If None, a realization is selected at random.</span>
 <span class="sd">        wide : boolean, optional</span>
-<span class="sd">            Whether to return the pandas DataFrame in wide format. Default is False</span>
+<span class="sd">            Whether to return the pandas DataFrame in wide format. Default is False.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -689,10 +689,16 @@ document.write(`
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hour</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The hour must be an integer&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">realization</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The realization must be an integer&#39;</span><span class="p">)</span>
 
-        <span class="n">key_hours</span><span class="p">,</span> <span class="n">key_realizations</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">key_hours</span><span class="p">,</span> <span class="n">key_realizations</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>        
+        <span class="k">if</span> <span class="n">realization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># it should be an integer</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">realization</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The realization must be an integer&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># randomly choose a realization</span>
+            <span class="n">realization</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">key_realizations</span><span class="p">)))</span>
+
         <span class="n">sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">hour</span><span class="p">,</span> <span class="n">realization</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">sample</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -706,7 +712,9 @@ document.write(`
                                   <span class="s1">&#39;journeys&#39;</span><span class="p">:</span> <span class="n">sample</span><span class="o">.</span><span class="n">data</span><span class="p">})</span>
         <span class="k">if</span> <span class="n">wide</span><span class="p">:</span>
             <span class="c1"># convert to wide format using pivot_table</span>
-            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">sample_df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;end_msoa&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;start_msoa&#39;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">wide_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">sample_df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;end_msoa&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;start_msoa&#39;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">wide_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">wide_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">wide_df</span>
 
         <span class="k">return</span> <span class="n">sample_df</span></div>
 
@@ -948,9 +956,10 @@ document.write(`
                                       <span class="s1">&#39;journeys&#39;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]})</span>
             <span class="k">if</span> <span class="n">wide</span><span class="p">:</span>
                 <span class="c1"># convert to wide format using pivot_table</span>
-                <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">sample_df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;end_msoa&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;start_msoa&#39;</span><span class="p">,</span>
-                                      <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
+                <span class="n">wide_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">sample_df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;end_msoa&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;start_msoa&#39;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">wide_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">wide_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">wide_df</span>
+            
             <span class="k">return</span> <span class="n">sample_df</span>
 
         <span class="k">return</span> <span class="n">sample</span></div>

@@ -691,14 +691,14 @@ distribution is equal to mean + k*mean^2.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="gemmm.model.ODSampler.to_pandas">
-<span class="sig-name descname"><span class="pre">to_pandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realization</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wide</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODSampler.to_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODSampler.to_pandas" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">to_pandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wide</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gemmm/model.html#ODSampler.to_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gemmm.model.ODSampler.to_pandas" title="Link to this definition">#</a></dt>
 <dd><p>Convert a sample from a sparse matrix to a pandas DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>hour</strong> (<em>int</em>) – The hour of the sample to convert.</p></li>
-<li><p><strong>realization</strong> (<em>int</em>) – The realization of the sample to convert.</p></li>
-<li><p><strong>wide</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether to return the pandas DataFrame in wide format. Default is False</p></li>
+<li><p><strong>realization</strong> (<em>int</em><em>, </em><em>optional</em>) – The realization of the sample to convert. If None, a realization is selected at random.</p></li>
+<li><p><strong>wide</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether to return the pandas DataFrame in wide format. Default is False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
