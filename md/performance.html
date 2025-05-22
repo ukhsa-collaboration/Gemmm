@@ -349,7 +349,7 @@ document.write(`
 <li><p>The total number of journeys between all pairs of MSOAs is given by:</p>
 <div class="math notranslate nohighlight">
 \[
-   S^h = \sum_{i} \sum_{j} y_{i,j}^h \, ,
+   S^h = \sum_{i} \sum_{j} y_{i,j}^h \, .
    \]</div>
 <p>As shown below, the observed (<span class="math notranslate nohighlight">\(S^h\)</span>) and modelled (<span class="math notranslate nohighlight">\(\hat{S}^h\)</span>) totals are generally similar, with the model slightly overestimating the total number of journeys during night-time hours.</p>
 <a class="reference internal image-reference" href="../_images/performance_total.png"><img alt="" class="align-center" src="../_images/performance_total.png" style="width: 50%;" />
@@ -361,9 +361,9 @@ document.write(`
 <li><p>The total number of journeys entering and leaving MSOA <span class="math notranslate nohighlight">\(i\)</span> during hour <span class="math notranslate nohighlight">\(h\)</span> is given by:</p>
 <div class="math notranslate nohighlight">
 \[
-   S_{\text{in}}^h = \sum_{j} y_{j,i}^h \, , \hspace{1cm} S_{\text{out}}^h = \sum_{j} y_{i,j}^h \, .
+   S_{i,\text{in}}^h = \sum_{j} y_{j,i}^h \, , \hspace{1cm} S_{i,\text{out}}^h = \sum_{j} y_{i,j}^h \, .
    \]</div>
-<p>The observed distributions of <span class="math notranslate nohighlight">\(S_{\text{in}}^h\)</span> and <span class="math notranslate nohighlight">\(S_{\text{out}}^h\)</span> (grey) can be compared to the modelled distributions of <span class="math notranslate nohighlight">\(\hat{S}_{\text{in}}^h\)</span> and <span class="math notranslate nohighlight">\(\hat{S}_{\text{out}}^h\)</span> (red) using the two-sample Kolmogorov-Smirnov (KS) test statistic. The higher KS test-statistic between midnight and 6am is an indicator of poorer performance during these hours.</p>
+<p>The observed distributions of <span class="math notranslate nohighlight">\(S_{i,\text{in}}^h\)</span> and <span class="math notranslate nohighlight">\(S_{i,\text{out}}^h\)</span> (grey) can be compared to the modelled distributions of <span class="math notranslate nohighlight">\(\hat{S}_{i,\text{in}}^h\)</span> and <span class="math notranslate nohighlight">\(\hat{S}_{i,\text{out}}^h\)</span> (red) across all MSOAs using the two-sample Kolmogorov-Smirnov (KS) test statistic. The higher KS test-statistic between midnight and 6am is an indicator of poorer performance during these hours.</p>
 <a class="reference internal image-reference" href="../_images/performance_flows_lower.png"><img alt="" class="align-center" src="../_images/performance_flows_lower.png" style="width: 100%;" />
 </a>
 </li>

@@ -354,6 +354,20 @@ document.write(`
 <h1>Using GeMMM<a class="headerlink" href="#using-gemmm" title="Link to this heading">#</a></h1>
 <p>In this notebook we demonstrate how GeMMM can be used to sample origin-destination matrices for a specific set of MSOAs.</p>
 <p>A table of available MSOAs is provided in the <code class="docutils literal notranslate"><span class="pre">tables</span></code> module. This includes additional information such as the Local Authority District (LAD), region and country that may be relevant when journey numbers are required for a larger area. For MSOAs in Wales and Scotland, the region and LAD columns are equivalent.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1001</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gemmm.tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">gb_msoas</span>
@@ -535,211 +549,211 @@ Suppose that we are interested in generating journey numbers for MSOAs located w
   <tbody>
     <tr>
       <th>E02003719</th>
-      <td>214.0</td>
-      <td>0.0</td>
-      <td>3.0</td>
+      <td>218.0</td>
       <td>1.0</td>
-      <td>3.0</td>
-      <td>6.0</td>
-      <td>43.0</td>
-      <td>8.0</td>
       <td>2.0</td>
-      <td>18.0</td>
-      <td>8.0</td>
-      <td>25.0</td>
-      <td>14.0</td>
+      <td>2.0</td>
+      <td>6.0</td>
+      <td>10.0</td>
+      <td>45.0</td>
+      <td>13.0</td>
+      <td>5.0</td>
+      <td>27.0</td>
+      <td>16.0</td>
+      <td>39.0</td>
+      <td>10.0</td>
     </tr>
     <tr>
       <th>E02003720</th>
       <td>4.0</td>
       <td>289.0</td>
+      <td>6.0</td>
+      <td>5.0</td>
+      <td>10.0</td>
+      <td>15.0</td>
+      <td>50.0</td>
       <td>4.0</td>
-      <td>1.0</td>
-      <td>9.0</td>
+      <td>2.0</td>
+      <td>28.0</td>
       <td>12.0</td>
-      <td>40.0</td>
-      <td>11.0</td>
-      <td>5.0</td>
-      <td>32.0</td>
-      <td>5.0</td>
-      <td>46.0</td>
-      <td>19.0</td>
+      <td>54.0</td>
+      <td>18.0</td>
     </tr>
     <tr>
       <th>E02003721</th>
+      <td>6.0</td>
+      <td>2.0</td>
+      <td>342.0</td>
+      <td>1.0</td>
+      <td>5.0</td>
       <td>3.0</td>
+      <td>60.0</td>
       <td>4.0</td>
-      <td>354.0</td>
-      <td>4.0</td>
-      <td>4.0</td>
+      <td>2.0</td>
+      <td>15.0</td>
       <td>6.0</td>
-      <td>41.0</td>
-      <td>6.0</td>
-      <td>0.0</td>
-      <td>13.0</td>
-      <td>6.0</td>
-      <td>24.0</td>
-      <td>23.0</td>
+      <td>36.0</td>
+      <td>30.0</td>
     </tr>
     <tr>
       <th>E02003722</th>
-      <td>4.0</td>
-      <td>4.0</td>
-      <td>4.0</td>
-      <td>396.0</td>
       <td>3.0</td>
-      <td>3.0</td>
-      <td>17.0</td>
       <td>2.0</td>
       <td>3.0</td>
-      <td>15.0</td>
+      <td>409.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
       <td>9.0</td>
-      <td>21.0</td>
-      <td>10.0</td>
+      <td>3.0</td>
+      <td>1.0</td>
+      <td>8.0</td>
+      <td>11.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
     </tr>
     <tr>
       <th>E02003723</th>
-      <td>4.0</td>
-      <td>7.0</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>451.0</td>
       <td>6.0</td>
-      <td>18.0</td>
-      <td>6.0</td>
+      <td>3.0</td>
+      <td>1.0</td>
+      <td>468.0</td>
+      <td>3.0</td>
+      <td>25.0</td>
       <td>4.0</td>
-      <td>14.0</td>
-      <td>2.0</td>
+      <td>5.0</td>
+      <td>13.0</td>
+      <td>4.0</td>
+      <td>28.0</td>
       <td>16.0</td>
-      <td>17.0</td>
     </tr>
     <tr>
       <th>E02003724</th>
       <td>7.0</td>
-      <td>8.0</td>
+      <td>6.0</td>
+      <td>6.0</td>
+      <td>1.0</td>
       <td>4.0</td>
-      <td>1.0</td>
-      <td>12.0</td>
-      <td>516.0</td>
-      <td>73.0</td>
-      <td>2.0</td>
-      <td>1.0</td>
-      <td>11.0</td>
+      <td>454.0</td>
+      <td>82.0</td>
+      <td>7.0</td>
+      <td>4.0</td>
       <td>19.0</td>
-      <td>39.0</td>
-      <td>42.0</td>
+      <td>17.0</td>
+      <td>31.0</td>
+      <td>27.0</td>
     </tr>
     <tr>
       <th>E02003725</th>
-      <td>10.0</td>
-      <td>8.0</td>
-      <td>18.0</td>
-      <td>7.0</td>
-      <td>7.0</td>
-      <td>28.0</td>
-      <td>1002.0</td>
-      <td>20.0</td>
+      <td>13.0</td>
+      <td>12.0</td>
+      <td>19.0</td>
       <td>5.0</td>
-      <td>33.0</td>
-      <td>14.0</td>
-      <td>49.0</td>
-      <td>34.0</td>
+      <td>16.0</td>
+      <td>18.0</td>
+      <td>962.0</td>
+      <td>9.0</td>
+      <td>4.0</td>
+      <td>36.0</td>
+      <td>18.0</td>
+      <td>38.0</td>
+      <td>39.0</td>
     </tr>
     <tr>
       <th>E02003726</th>
+      <td>6.0</td>
       <td>3.0</td>
-      <td>5.0</td>
-      <td>8.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>13.0</td>
-      <td>349.0</td>
+      <td>12.0</td>
       <td>1.0</td>
+      <td>6.0</td>
       <td>4.0</td>
+      <td>14.0</td>
+      <td>352.0</td>
+      <td>1.0</td>
+      <td>8.0</td>
       <td>5.0</td>
       <td>10.0</td>
-      <td>11.0</td>
+      <td>8.0</td>
     </tr>
     <tr>
       <th>E02003727</th>
-      <td>3.0</td>
-      <td>10.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>5.0</td>
       <td>2.0</td>
-      <td>0.0</td>
-      <td>6.0</td>
+      <td>9.0</td>
+      <td>4.0</td>
+      <td>17.0</td>
       <td>1.0</td>
-      <td>22.0</td>
-      <td>1.0</td>
-      <td>377.0</td>
+      <td>372.0</td>
+      <td>8.0</td>
       <td>3.0</td>
-      <td>3.0</td>
-      <td>10.0</td>
+      <td>9.0</td>
       <td>8.0</td>
     </tr>
     <tr>
       <th>E02003728</th>
-      <td>6.0</td>
-      <td>11.0</td>
+      <td>20.0</td>
+      <td>9.0</td>
       <td>16.0</td>
-      <td>8.0</td>
-      <td>11.0</td>
-      <td>10.0</td>
-      <td>48.0</td>
+      <td>7.0</td>
+      <td>12.0</td>
+      <td>9.0</td>
+      <td>65.0</td>
       <td>4.0</td>
-      <td>1.0</td>
-      <td>392.0</td>
-      <td>15.0</td>
-      <td>31.0</td>
-      <td>29.0</td>
+      <td>6.0</td>
+      <td>371.0</td>
+      <td>13.0</td>
+      <td>30.0</td>
+      <td>24.0</td>
     </tr>
     <tr>
       <th>E02003729</th>
-      <td>12.0</td>
-      <td>5.0</td>
-      <td>17.0</td>
-      <td>14.0</td>
-      <td>13.0</td>
-      <td>7.0</td>
-      <td>61.0</td>
-      <td>2.0</td>
-      <td>4.0</td>
-      <td>6.0</td>
-      <td>310.0</td>
-      <td>27.0</td>
+      <td>16.0</td>
       <td>9.0</td>
+      <td>18.0</td>
+      <td>5.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>69.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>350.0</td>
+      <td>40.0</td>
+      <td>11.0</td>
     </tr>
     <tr>
       <th>E02003730</th>
-      <td>12.0</td>
-      <td>15.0</td>
-      <td>23.0</td>
-      <td>12.0</td>
-      <td>16.0</td>
-      <td>13.0</td>
-      <td>89.0</td>
+      <td>21.0</td>
+      <td>14.0</td>
       <td>19.0</td>
-      <td>7.0</td>
-      <td>26.0</td>
-      <td>29.0</td>
-      <td>754.0</td>
-      <td>27.0</td>
+      <td>13.0</td>
+      <td>9.0</td>
+      <td>16.0</td>
+      <td>116.0</td>
+      <td>18.0</td>
+      <td>13.0</td>
+      <td>25.0</td>
+      <td>32.0</td>
+      <td>711.0</td>
+      <td>30.0</td>
     </tr>
     <tr>
       <th>E02003731</th>
-      <td>17.0</td>
-      <td>5.0</td>
+      <td>14.0</td>
+      <td>4.0</td>
+      <td>3.0</td>
+      <td>1.0</td>
+      <td>8.0</td>
+      <td>16.0</td>
+      <td>49.0</td>
       <td>6.0</td>
       <td>7.0</td>
-      <td>8.0</td>
-      <td>9.0</td>
-      <td>37.0</td>
-      <td>2.0</td>
-      <td>4.0</td>
-      <td>7.0</td>
-      <td>3.0</td>
-      <td>17.0</td>
-      <td>495.0</td>
+      <td>6.0</td>
+      <td>6.0</td>
+      <td>12.0</td>
+      <td>513.0</td>
     </tr>
   </tbody>
 </table>
@@ -748,9 +762,7 @@ Suppose that we are interested in generating journey numbers for MSOAs located w
 <br>
 Sometimes it may be useful to know average journey numbers rather than sampled values. These averages can be extracted from the Fourier series and radiation model data for a specific hour.<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="n">hour</span> <span class="o">=</span> <span class="mi">16</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hour</span> <span class="o">=</span> <span class="mi">16</span>
 <span class="n">fourier_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">msoas</span><span class="p">),)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">fourier_mean</span><span class="p">[</span><span class="n">sampler</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">fourier_data</span><span class="o">.</span><span class="n">mean</span><span class="p">[</span><span class="n">hour</span><span class="p">]</span>
 
@@ -771,7 +783,7 @@ Sometimes it may be useful to know average journey numbers rather than sampled v
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saving samples to weekday_samples_2025-05-13--09-32-45.nc
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saving samples to weekday_samples_2025-05-22--10-21-00.nc
 </pre></div>
 </div>
 </div>
@@ -850,211 +862,211 @@ Number of realizations: 5
   <tbody>
     <tr>
       <th>E02003719</th>
-      <td>224.0</td>
-      <td>6.0</td>
-      <td>5.0</td>
+      <td>259.0</td>
       <td>2.0</td>
-      <td>3.0</td>
-      <td>6.0</td>
-      <td>29.0</td>
-      <td>5.0</td>
       <td>4.0</td>
-      <td>11.0</td>
-      <td>10.0</td>
-      <td>26.0</td>
-      <td>5.0</td>
+      <td>3.0</td>
+      <td>8.0</td>
+      <td>12.0</td>
+      <td>28.0</td>
+      <td>6.0</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>12.0</td>
+      <td>14.0</td>
+      <td>7.0</td>
     </tr>
     <tr>
       <th>E02003720</th>
-      <td>3.0</td>
-      <td>225.0</td>
-      <td>3.0</td>
-      <td>3.0</td>
-      <td>10.0</td>
-      <td>13.0</td>
-      <td>26.0</td>
-      <td>11.0</td>
+      <td>7.0</td>
+      <td>249.0</td>
+      <td>8.0</td>
+      <td>7.0</td>
+      <td>2.0</td>
+      <td>17.0</td>
+      <td>21.0</td>
+      <td>6.0</td>
       <td>4.0</td>
-      <td>9.0</td>
-      <td>8.0</td>
-      <td>18.0</td>
-      <td>8.0</td>
+      <td>15.0</td>
+      <td>7.0</td>
+      <td>23.0</td>
+      <td>11.0</td>
     </tr>
     <tr>
       <th>E02003721</th>
-      <td>3.0</td>
-      <td>11.0</td>
-      <td>280.0</td>
-      <td>3.0</td>
+      <td>4.0</td>
       <td>7.0</td>
-      <td>10.0</td>
-      <td>38.0</td>
+      <td>336.0</td>
+      <td>9.0</td>
+      <td>4.0</td>
+      <td>6.0</td>
+      <td>22.0</td>
       <td>5.0</td>
-      <td>10.0</td>
-      <td>10.0</td>
-      <td>15.0</td>
-      <td>27.0</td>
-      <td>13.0</td>
+      <td>4.0</td>
+      <td>17.0</td>
+      <td>18.0</td>
+      <td>26.0</td>
+      <td>8.0</td>
     </tr>
     <tr>
       <th>E02003722</th>
-      <td>3.0</td>
-      <td>8.0</td>
       <td>1.0</td>
-      <td>274.0</td>
       <td>4.0</td>
-      <td>3.0</td>
-      <td>16.0</td>
+      <td>7.0</td>
+      <td>304.0</td>
+      <td>2.0</td>
       <td>5.0</td>
-      <td>0.0</td>
-      <td>12.0</td>
       <td>10.0</td>
-      <td>17.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+      <td>11.0</td>
+      <td>19.0</td>
       <td>9.0</td>
     </tr>
     <tr>
       <th>E02003723</th>
-      <td>2.0</td>
-      <td>9.0</td>
-      <td>15.0</td>
-      <td>1.0</td>
-      <td>413.0</td>
-      <td>11.0</td>
-      <td>29.0</td>
-      <td>5.0</td>
-      <td>8.0</td>
-      <td>9.0</td>
       <td>4.0</td>
-      <td>19.0</td>
-      <td>9.0</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>1.0</td>
+      <td>427.0</td>
+      <td>12.0</td>
+      <td>16.0</td>
+      <td>4.0</td>
+      <td>13.0</td>
+      <td>10.0</td>
+      <td>3.0</td>
+      <td>16.0</td>
+      <td>12.0</td>
     </tr>
     <tr>
       <th>E02003724</th>
       <td>11.0</td>
-      <td>16.0</td>
-      <td>10.0</td>
-      <td>9.0</td>
-      <td>2.0</td>
-      <td>349.0</td>
-      <td>34.0</td>
-      <td>3.0</td>
       <td>6.0</td>
-      <td>26.0</td>
-      <td>7.0</td>
-      <td>28.0</td>
-      <td>13.0</td>
+      <td>15.0</td>
+      <td>6.0</td>
+      <td>3.0</td>
+      <td>409.0</td>
+      <td>32.0</td>
+      <td>12.0</td>
+      <td>9.0</td>
+      <td>19.0</td>
+      <td>8.0</td>
+      <td>23.0</td>
+      <td>8.0</td>
     </tr>
     <tr>
       <th>E02003725</th>
       <td>42.0</td>
-      <td>43.0</td>
-      <td>45.0</td>
-      <td>24.0</td>
-      <td>24.0</td>
-      <td>62.0</td>
-      <td>1149.0</td>
+      <td>68.0</td>
       <td>44.0</td>
-      <td>34.0</td>
-      <td>76.0</td>
-      <td>58.0</td>
-      <td>155.0</td>
-      <td>44.0</td>
+      <td>24.0</td>
+      <td>30.0</td>
+      <td>75.0</td>
+      <td>1190.0</td>
+      <td>41.0</td>
+      <td>20.0</td>
+      <td>79.0</td>
+      <td>49.0</td>
+      <td>158.0</td>
+      <td>51.0</td>
     </tr>
     <tr>
       <th>E02003726</th>
-      <td>9.0</td>
       <td>7.0</td>
       <td>12.0</td>
-      <td>4.0</td>
-      <td>6.0</td>
-      <td>6.0</td>
-      <td>37.0</td>
-      <td>321.0</td>
-      <td>5.0</td>
-      <td>12.0</td>
+      <td>10.0</td>
       <td>3.0</td>
-      <td>17.0</td>
+      <td>5.0</td>
       <td>8.0</td>
+      <td>39.0</td>
+      <td>290.0</td>
+      <td>4.0</td>
+      <td>14.0</td>
+      <td>8.0</td>
+      <td>13.0</td>
+      <td>6.0</td>
     </tr>
     <tr>
       <th>E02003727</th>
+      <td>6.0</td>
       <td>5.0</td>
+      <td>3.0</td>
       <td>1.0</td>
-      <td>4.0</td>
       <td>2.0</td>
-      <td>4.0</td>
-      <td>3.0</td>
-      <td>20.0</td>
-      <td>3.0</td>
-      <td>353.0</td>
-      <td>5.0</td>
-      <td>5.0</td>
-      <td>17.0</td>
       <td>10.0</td>
+      <td>17.0</td>
+      <td>4.0</td>
+      <td>321.0</td>
+      <td>2.0</td>
+      <td>6.0</td>
+      <td>21.0</td>
+      <td>8.0</td>
     </tr>
     <tr>
       <th>E02003728</th>
-      <td>23.0</td>
-      <td>21.0</td>
-      <td>13.0</td>
-      <td>10.0</td>
-      <td>11.0</td>
-      <td>17.0</td>
-      <td>38.0</td>
-      <td>6.0</td>
-      <td>2.0</td>
-      <td>385.0</td>
       <td>12.0</td>
-      <td>25.0</td>
+      <td>18.0</td>
+      <td>17.0</td>
+      <td>14.0</td>
+      <td>9.0</td>
+      <td>18.0</td>
+      <td>44.0</td>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>372.0</td>
+      <td>17.0</td>
+      <td>27.0</td>
       <td>17.0</td>
     </tr>
     <tr>
       <th>E02003729</th>
-      <td>10.0</td>
+      <td>9.0</td>
       <td>8.0</td>
-      <td>8.0</td>
-      <td>6.0</td>
-      <td>4.0</td>
-      <td>15.0</td>
-      <td>24.0</td>
-      <td>6.0</td>
+      <td>2.0</td>
       <td>5.0</td>
+      <td>2.0</td>
+      <td>15.0</td>
+      <td>33.0</td>
       <td>8.0</td>
-      <td>258.0</td>
-      <td>29.0</td>
-      <td>12.0</td>
+      <td>4.0</td>
+      <td>10.0</td>
+      <td>282.0</td>
+      <td>28.0</td>
+      <td>10.0</td>
     </tr>
     <tr>
       <th>E02003730</th>
+      <td>31.0</td>
+      <td>28.0</td>
       <td>32.0</td>
-      <td>36.0</td>
+      <td>19.0</td>
+      <td>25.0</td>
       <td>37.0</td>
-      <td>13.0</td>
-      <td>20.0</td>
-      <td>33.0</td>
-      <td>91.0</td>
-      <td>16.0</td>
+      <td>123.0</td>
+      <td>25.0</td>
       <td>7.0</td>
-      <td>34.0</td>
-      <td>24.0</td>
-      <td>682.0</td>
-      <td>17.0</td>
+      <td>36.0</td>
+      <td>36.0</td>
+      <td>622.0</td>
+      <td>20.0</td>
     </tr>
     <tr>
       <th>E02003731</th>
-      <td>18.0</td>
       <td>19.0</td>
-      <td>19.0</td>
-      <td>17.0</td>
+      <td>30.0</td>
+      <td>25.0</td>
       <td>15.0</td>
-      <td>42.0</td>
-      <td>33.0</td>
       <td>11.0</td>
-      <td>9.0</td>
-      <td>16.0</td>
-      <td>7.0</td>
-      <td>29.0</td>
-      <td>415.0</td>
+      <td>53.0</td>
+      <td>42.0</td>
+      <td>11.0</td>
+      <td>15.0</td>
+      <td>30.0</td>
+      <td>15.0</td>
+      <td>30.0</td>
+      <td>477.0</td>
     </tr>
   </tbody>
 </table>

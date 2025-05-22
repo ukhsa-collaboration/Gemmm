@@ -37,6 +37,15 @@ python -m unittest discover -s tests
 
 ## Basic usage
 Suppose that you want to simulate the number of journeys that are made between two areas at 8am on a weekday, this can be achieved with the following few lines of code:
+```{code-cell} python3
+:tags: [remove-input]
+
+import pooch
+pooch.get_logger().setLevel('WARNING')
+
+import numpy
+numpy.random.seed(1001)
+```
 ```{code-cell} ipython3
 import gemmm
 
