@@ -5,7 +5,7 @@ By combining the Fourier series and radiation models, we are able to sample hour
 1. The total number of journeys between all pairs of MSOAs is given by:
 
    $$
-   S^h = \sum_{i} \sum_{j} y_{i,j}^h \, ,
+   S^h = \sum_{i} \sum_{j} y_{i,j}^h \, .
    $$
 
    As shown below, the observed ($S^h$) and modelled ($\hat{S}^h$) totals are generally similar, with the model slightly overestimating the total number of journeys during night-time hours.
@@ -21,10 +21,10 @@ By combining the Fourier series and radiation models, we are able to sample hour
 2. The total number of journeys entering and leaving MSOA $i$ during hour $h$ is given by:
 
    $$
-   S_{\text{in}}^h = \sum_{j} y_{j,i}^h \, , \hspace{1cm} S_{\text{out}}^h = \sum_{j} y_{i,j}^h \, .
+   S_{i,\text{in}}^h = \sum_{j} y_{j,i}^h \, , \hspace{1cm} S_{i,\text{out}}^h = \sum_{j} y_{i,j}^h \, .
    $$
 
-   The observed distributions of $S_{\text{in}}^h$ and $S_{\text{out}}^h$ (grey) can be compared to the modelled distributions of $\hat{S}_{\text{in}}^h$ and $\hat{S}_{\text{out}}^h$ (red) using the two-sample Kolmogorov-Smirnov (KS) test statistic. The higher KS test-statistic between midnight and 6am is an indicator of poorer performance during these hours.
+   The observed distributions of $S_{i,\text{in}}^h$ and $S_{i,\text{out}}^h$ (grey) can be compared to the modelled distributions of $\hat{S}_{i,\text{in}}^h$ and $\hat{S}_{i,\text{out}}^h$ (red) across all MSOAs using the two-sample Kolmogorov-Smirnov (KS) test statistic. The higher KS test-statistic between midnight and 6am is an indicator of poorer performance during these hours.
 
    ```{image} ../images/performance_flows_lower.png
    :alt: 

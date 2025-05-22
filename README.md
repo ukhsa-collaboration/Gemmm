@@ -17,3 +17,7 @@ cd gemmm
 pip install -r requirements.txt
 pip install .
 ```
+The installation from source is successful if the following tests produce no errors:
+```
+python -m unittest discover -s tests
+```

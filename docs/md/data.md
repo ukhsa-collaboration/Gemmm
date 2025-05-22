@@ -12,8 +12,9 @@ Since users of the network only account for a fraction of the total population, 
 
 For data protection purposes, the scaled origin-destination counts are averaged, with weekday averages taken over Monday to Friday and weekend averages taken across two consecutive weekends. This means that for a particular week, the weekday count at 9am is instead an average of the counts at 9am from Monday to Friday. Averaging the journey counts effectively smooths the time series. Whilst this reduces the effect of MSOA specific events that are difficult to explain, it also reduce effects from bank holidays, for example, that are present nationwide and could be modelled. Note that all of the pre-processing steps described so far were carried out by the mobile network provider prior to us receiving the data.
 
-When parameterising the underlying models, counts from weeks beginning 2<sup>nd</sup> January and 13<sup>th</sup> and 20<sup>th</sup> February are excluded as these coincide with school holidays. During this time we expect the movement patterns to differ, but do not have sufficient data to reliably quantify this effect. (time of year)
+When parameterising the underlying models, counts from weeks beginning 2<sup>nd</sup> January and 13<sup>th</sup> and 20<sup>th</sup> February are excluded as these coincide with school holidays. During this time we expect the movement patterns to differ, but do not have sufficient data to reliably quantify this effect.
 
+```{warning}
 In addition to the assumptions and caveats described above, it is worth emphasising that the data covers a three-month period during winter months and GeMMM cannot therefore describe any seasonal changes in movement patterns. Users should also consider the general limitations of mobile telecoms data, such as poorer signal in rural areas, and age and socioeconomic biases related to mobile phone ownership.
-
+```
 
